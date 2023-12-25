@@ -5,7 +5,7 @@ CHANGES_COLOR="\033[4;91m"     # 91m is the Light Red
 BRANCH_COLOR="\033[4;33m"      # 33m is the Yellow color
 WARNING_COLOR="\033[31m"       # 31m is the Red color 
 END_COLOR="\033[0m"            #  0m is to revert back to default color
-basicCtpPath="Desktop/Camelot_Projects"
+basicCtpPath="../Desktop/Camelot_Projects"
 printOnce=false
 specifiedPaths=""
 mapChoices=(
@@ -24,9 +24,7 @@ performAction() {
     for choice in "${mapChoices[@]}"; do
         KEY="${choice%%::*}"
         VALUE="${choice##*::}"
-
         if [ "$KEY" == "$userChoice" ]; then
-            echo "The value is: $VALUE for the key: $userChoice"
             break
         fi
     done
@@ -82,7 +80,7 @@ commitCode(){
 
     local messageArgument=("$@")
     gitCommitMessage="${messageArgument}"
-    echo -e "the commit message is: $gitCommitMessage and it will be applies at the $pathToApplyTheCommit    path"
+    git -C "$pathToApplyTheCommit" commit -S -m "$gitCommitMessage"
 }
 
 changeSpecificLine(){
