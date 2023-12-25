@@ -8,28 +8,48 @@ END_COLOR="\033[0m"            #  0m is to revert back to default color
 basicCtpPath="Desktop/Camelot_Projects"
 printOnce=false
 specifiedPaths=""
+mapChoices=(
+    "commit::commitCode"
+    "specific::changeSpecificLine"
+    "push::pushCode"
+    "status::statusCode"
+)
 
 # directories=$(find "$basicCtpPath" -maxdepth 1 -type d -name 'ctp-*' | wc -l)  # this command prints only the number of the folders, not the names
 ctpDirectories=$(find "$basicCtpPath" -maxdepth 1 -type d -name 'ctp-*'  -exec sh -c 'cd "{}" && pwd' \;)
 
 performAction() {
-    local arguments=$1
+    local userChoice=$1
+
+    for choice in "${mapChoices[@]}"; do
+        KEY="${choice%%::*}"
+        VALUE="${choice##*::}"
+
+        if [ "$KEY" == "$userChoice" ]; then
+            echo "The value is: $VALUE for the key: $userChoice"
+            break
+        fi
+    done
+
+    local arguments=$2
     if [[ "$arguments" == *','* ]]; then
         IFS=',' read -ra argsArray <<< "$(echo "$arguments" | tr -d '[:space:]')" #create here the array for the arguments.
     else
         argsArray=("$arguments")
     fi
     shift
+    shift
+
 
     local customInputPaths="${@:-$ctpDirectories}"
     paths=($customInputPaths)       #make it array, so I can access each element individual
     # changeSpecificLine "${paths[17]}" "${argsArray[@]}"
     for path in "${paths[@]}"; do
-       changeSpecificLine "$path" "${argsArray[@]}"
+       "$VALUE" "$path" "${argsArray[@]}"
     done
 }
 
-status(){
+statusCode(){
     local path=$1
     if [ "$printOnce" = false ]; then
         echo    "--------------------------------------------------------|"
@@ -66,7 +86,7 @@ commitCode(){
 }
 
 changeSpecificLine(){
-    local pathDestination=$1 # I can take only the first one path, because from the loop I will retrieve each time only 1 path. So I'm ok! 
+    local pathDestination=$1 # I can take only the first one path, because from the loop I will retrieve each time, only 1 path. So I'm ok! 
     shift
 
     local arguments=("$@")
@@ -107,8 +127,10 @@ setSpecificPaths(){
     echo -e "The specifiedPaths contains: ${specifiedPaths[@]}\n"
 }
 
+# "/Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-rpm-plugin /Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-artifact-publishing-plugin"
+
 if [[ $# -eq 0 ]]; then
-    performAction "" # "/Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-rpm-plugin /Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-artifact-publishing-plugin"
+    performAction "status" ""
 fi
 #                the $ ensures it is at end of the line.
 # sed -i '' -e '/^on:$/s/$/\n  push:/' delete-specific-packages.yml   # adds the 'push' under the 'on:'. So with this command we change the status to 'on: push', and can run in every git push in the repo
@@ -126,7 +148,7 @@ while [[ $# -gt 0 ]]; do
         --commit)  # should add to take the commit message, and do that for all, or, for the specified projects
             read -p "Enter the commit message:" commitMessage
             setSpecificPaths
-            performAction "$commitMessage" "${specifiedPaths[@]}" # it gives the commitMessage as the first parameter to performAction. If the paths, are not set, it will apply to all the matches of the pattern
+            performAction "commit" "$commitMessage" "${specifiedPaths[@]}" # it gives the commitMessage as the first parameter to performAction. If the paths, are not set, it will apply to all the matches of the pattern
             ;;
         
         --specific)
@@ -138,7 +160,7 @@ while [[ $# -gt 0 ]]; do
             read newText
             specificReplaceDetails="$line, $oldText, $newText"
             setSpecificPaths
-            performAction "$specificReplaceDetails" "${specifiedPaths[@]}"
+            performAction "specific" "$specificReplaceDetails" "${specifiedPaths[@]}"
             ;;
 
         --custom)
