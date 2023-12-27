@@ -5,26 +5,29 @@ CHANGES_COLOR="\033[4;91m"     # 91m is the Light Red
 BRANCH_COLOR="\033[4;33m"      # 33m is the Yellow color
 WARNING_COLOR="\033[31m"       # 31m is the Red color 
 END_COLOR="\033[0m"            #  0m is to revert back to default color
-basicCtpPath="../Desktop/Camelot_Projects"
+rootFolder="../Desktop/Camelot_Projects"
+searchPattern="ctp-*"
 printOnce=false
 specifiedPaths=""
 mapChoices=(
-    "commit::commitCode"
-    "specific::changeSpecificLine"
-    "push::pushCode"
     "status::statusCode"
+    "setYAMLRunningMode::changeYAMLRunningMode"
+    "commit::commitCode"
+    "push::pushCode"
+    "specific::changeSpecificLine"
+    "customCommand::"
 )
 
-# directories=$(find "$basicCtpPath" -maxdepth 1 -type d -name 'ctp-*' | wc -l)  # this command prints only the number of the folders, not the names
-ctpDirectories=$(find "$basicCtpPath" -maxdepth 1 -type d -name 'ctp-*'  -exec sh -c 'cd "{}" && pwd' \;)
+# directories=$(find "$rootFolder" -maxdepth 1 -type d -name 'ctp-*' | wc -l)  # this command prints only the number of the folders, not the names
+ctpDirectories=$(find "$rootFolder" -maxdepth 1 -type d -name "$searchPattern"  -exec sh -c 'cd "{}" && pwd' \;)
 
 performAction() {
     local userChoice=$1
 
     for choice in "${mapChoices[@]}"; do
-        KEY="${choice%%::*}"
-        VALUE="${choice##*::}"
-        if [ "$KEY" == "$userChoice" ]; then
+        parameter="${choice%%::*}"
+        functionName="${choice##*::}"
+        if [ "$parameter" == "$userChoice" ]; then
             break
         fi
     done
@@ -41,14 +44,13 @@ performAction() {
 
     local customInputPaths="${@:-$ctpDirectories}"
     paths=($customInputPaths)       #make it array, so I can access each element individual
-    # changeSpecificLine "${paths[17]}" "${argsArray[@]}"
     for path in "${paths[@]}"; do
-       "$VALUE" "$path" "${argsArray[@]}"
+       "$functionName" "$path" "${argsArray[@]}"
     done
 }
 
 statusCode(){
-    local path=$1
+    local pathToLocalRepo=$1
     if [ "$printOnce" = false ]; then
         echo    "--------------------------------------------------------|"
         echo    "Checking if there are any changes in the repo/s         |"
@@ -56,63 +58,70 @@ statusCode(){
         printOnce=true
     fi
 
-    defaultStatusWithoutChanges=$(git -C "$path" status -sb | head -n 1)
-    currentRepoStatus=$(git -C "${path}" status --branch --porcelain)
-    currentBranch=$(git -C "$path" rev-parse --abbrev-ref HEAD)
+    defaultStatusWithoutChanges=$(git -C "$pathToLocalRepo" status -sb | head -n 1)
+    currentRepoStatus=$(git -C "${pathToLocalRepo}" status --branch --porcelain)
+    currentBranch=$(git -C "$pathToLocalRepo" rev-parse --abbrev-ref HEAD)
 
     if [ "$defaultStatusWithoutChanges" == "$currentRepoStatus" ]; then
         echo -e "The folder in the path:${NO_CHANGES_COLOR}"$path"${END_COLOR} has no changes in the current branch: ${BRANCH_COLOR}"$currentBranch"${END_COLOR}"
     else
         echo -e "\nThe changes in the path: ${CHANGES_COLOR}"$path"${END_COLOR} in the branch ${BRANCH_COLOR}"$currentBranch"${END_COLOR} are\n"
-        git -C "$path" status
+        git -C "$pathToLocalRepo" status
     echo "------------------------------------------------------------------------------------------------------------------------"
     echo "------------------------------------------------------------------------------------------------------------------------"
     fi
 }
 
-replaceCode(){ #specific block of code I mean
-    echo -e "this is the replaceCode function"
-}
-
 commitCode(){
-    local pathToApplyTheCommit=$1
+    local pathToLocalRepo=$1
     shift
 
     local messageArgument=("$@")
     gitCommitMessage="${messageArgument}"
-    git -C "$pathToApplyTheCommit" commit -S -m "$gitCommitMessage"
+    git -C "$pathToLocalRepo" commit -S -m "$gitCommitMessage"
+}
+
+pushCode(){
+    local pathToLocalRepo=$1
+    git -C "$pathToLocalRepo" push 
+}
+
+changeYAMLRunningMode(){ #specific block of code I mean
+    local pathToLocalRepo=$1
+
+            #          the $ ensures it is at end of the line.
+    sed -i '' -e "/^on:$/s/$/\n  push:/" ${pathToLocalRepo}/.github/workflows/delete-specific-packages.yml   # adds the 'push' under the 'on:'. So with this command we change the status to 'on: push', and can run in every git push in the repo
+            #  the ^ ensures it is in the beginning of the line
+
+    sed -i '' -e "/workflow_dispatch/,/default/s/^/#/" ${pathToLocalRepo}/.github/workflows/delete-specific-packages.yml   # from the 'workflow_dispatch' -until(,)- 'default' word in the .yml -add(s)- in the -beginning(^)- the character #
 }
 
 changeSpecificLine(){
-    local pathDestination=$1 # I can take only the first one path, because from the loop I will retrieve each time, only 1 path. So I'm ok! 
+    local pathToLocalRepo=$1 # I can take only the first one path, because from the loop I will retrieve each time, only 1 path. So I'm ok! 
     shift
 
     local arguments=("$@")
     lineToChange="${arguments[0]}"
     oldText="${arguments[1]}"
     newText="${arguments[2]}"
-    
-    # directories=($ctpDirectories)  # make the 'ctpDirectories' to 'directories' array type
-    # echo "the value of the ctpDirectories is ${directories[17]}"  # the ctpDirectories in this print has all the paths with the folders. If I do ctpDirectories[1]/.github/workflows/delete-specific-packages.yml
 
-    sed -i '' -e "${lineToChange}s/${oldText}/${newText}/" ${pathDestination}/.github/workflows/delete-specific-packages.yml  # with this line, I change specific oldText with specific newText
-
+    sed -i '' -e "${lineToChange}s/${oldText}/${newText}/" ${pathToLocalRepo}/.github/workflows/delete-specific-packages.yml  # with this line, I change specific oldText with specific newText
     # if I want to change the whole line with new line, I have to put the first word of that specific line, in order to keep the indentation, and the newText. The command will be:
     # sed -i '' -e "${lineToChange}s/${oldText}.*/${newText}/" ${directories[17]}/.github/workflows/delete-specific-packages.yml
     # where the ${oldText} should be THE FIRST word of the ${lineToChange}, otherwise it change from the inputed word, until the end of the specific line.
 }
 
-# customFunc(){
-#     local paths=("$@")
+customFunc(){  # change the name of the function. Is not very representative
+    local paths=("$@")
 
-#     if [[ "${paths[@]}" -eq 0 ]]; then  
-#         echo -e "${WARNING_COLOR}Empty paths variable given. Please try again${END_COLOR}"
-#     else
-#         for path in "${paths[@]}"; do
-#             echo "the path is: $path"
-#         done
-#     fi
-# }
+    if [[ "${paths[@]}" -eq 0 ]]; then  
+        echo -e "${WARNING_COLOR}Empty paths variable given. Please try again${END_COLOR}"
+    else
+        for path in "${paths[@]}"; do
+            echo "the path is: $path"
+        done
+    fi
+}
 
 setSpecificPaths(){
     
@@ -125,22 +134,17 @@ setSpecificPaths(){
     echo -e "The specifiedPaths contains: ${specifiedPaths[@]}\n"
 }
 
-# "/Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-rpm-plugin /Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-artifact-publishing-plugin"
+# "/Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-artifact-publishing-plugin, /Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-module-conventions-plugin"
 
 if [[ $# -eq 0 ]]; then
     performAction "status" ""
 fi
-#                the $ ensures it is at end of the line.
-# sed -i '' -e '/^on:$/s/$/\n  push:/' delete-specific-packages.yml   # adds the 'push' under the 'on:'. So with this command we change the status to 'on: push', and can run in every git push in the repo
-#            the ^ ensures it is in the beginning of the line
-
-# sed -i '' -e '/workflow_dispatch/,/default/s/^/#/' delete-specific-packages.yml   # from the 'workflow_dispatch' -until(,)- 'default' word in the .yml -add(s)- in the -beginning(^)- the character #
-
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --replace)
-            replaceCode
+        --setYAMLRunningMode)
+            setSpecificPaths
+            performAction "setYAMLRunningMode" "" "${specifiedPaths[@]}"
             ;;
 
         --commit)  # should add to take the commit message, and do that for all, or, for the specified projects
@@ -149,6 +153,11 @@ while [[ $# -gt 0 ]]; do
             performAction "commit" "$commitMessage" "${specifiedPaths[@]}" # it gives the commitMessage as the first parameter to performAction. If the paths, are not set, it will apply to all the matches of the pattern
             ;;
         
+        --push)
+            echo "Push the change to the remote branch/repo"
+            performAction "push" "" "${specifiedPaths[@]}"
+            ;;
+
         --specific)
             echo -e "Insert the number of the line you want to edit(14)"
             read line
@@ -161,14 +170,11 @@ while [[ $# -gt 0 ]]; do
             performAction "specific" "$specificReplaceDetails" "${specifiedPaths[@]}"
             ;;
 
-        --custom)
+        --customCommand)  # change the name of the parameter. Is not very representative
             setSpecificPaths
             performAction "" "${specifiedPaths[@]}"
             ;;
         
-        --push)
-            echo "Push the change to the remote branch/repo"
-            ;;
         *)
             echo -e "${WARNING_COLOR}Not correct input flag. Try again\n${END_COLOR}"
             exit 1
@@ -176,11 +182,6 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
-
-
-
-
-# the below probably will be uncommented
 
 # echo "From the "$path1" the changes are:"
 # echo
