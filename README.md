@@ -13,6 +13,7 @@ which contains all the folders/projects you want to edit and apply the same chan
 If there are some other folders in the same `rootFolder`, you can specify a search-pattern in order to look for the desired ones. To set the\
 search-pattern, modify the variable `searchPattern` with the appropriate match pattern so the script can find all the folders. Follow up to this 
 [wildcards-link](https://tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm) to find the appropriate combinations of wildcards in order to cover all the matching patterns.\
+
 *Once again, make sure that you have set up correctly the path to `rootFolder` variable where the script can find all the folders with the matching pattern.*
 
 
