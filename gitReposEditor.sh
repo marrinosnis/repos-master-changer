@@ -6,7 +6,7 @@ BRANCH_COLOR="\033[4;33m"      # 33m is the Yellow color
 WARNING_COLOR="\033[31m"       # 31m is the Red color 
 END_COLOR="\033[0m"            #  0m is to revert back to default color
 rootFolder="../Desktop/Camelot_Projects"
-searchPattern="ctp-*"
+searchPattern=(-name 'ctp-*' -o -name 'ctp.*')
 printOnce=false
 specifiedPaths=""
 mapChoices=(
@@ -18,8 +18,8 @@ mapChoices=(
     "customCommand::"
 )
 
-# directories=$(find "$rootFolder" -maxdepth 1 -type d -name 'ctp-*' | wc -l)  # this command prints only the number of the folders, not the names
-ctpDirectories=$(find "$rootFolder" -maxdepth 1 -type d -name "$searchPattern"  -exec sh -c 'cd "{}" && pwd' \;)
+# directories=$(find "$rootFolder" -maxdepth 1 -type d \( -name 'ctp-*' -o -name 'ctp.*' \) | wc -l)  # this command prints only the number of the folders, not the names, with the patter 'ctp-' or 'ctp.'
+ctpDirectories=$(find "$rootFolder" -maxdepth 1 -type d \( "${searchPattern[@]}" \) -exec sh -c 'cd "{}" && pwd' \;)
 
 performAction() {
     local userChoice=$1
