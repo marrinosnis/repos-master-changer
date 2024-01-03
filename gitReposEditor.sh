@@ -122,7 +122,7 @@ customCommandFunction(){  # change the name of the function. Is not very represe
     case "$command" in
     rm | touch | mkdir)
         for arg in "${arguments[@]:1}"; do  # this loop is working for 'rm' and 'mkdir' commands. It is in loop, because for one path I might have multiple argumnets. e.g. mkdir ../Desktop/dir1 ../Desktop/dir2 ../Desktop/dir3
-        "$command" "$pathToFolder/$arg"
+            "$command" "$pathToFolder/$arg"
         done
         ;;
     
