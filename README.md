@@ -1,16 +1,16 @@
 # repos-master-changer
-A powerful bash script which can add&commit, push, edit the context of specific files using the `sed` tool. That script was created\
-for massive editing committing and pushing **the same changes** to many repos simultaneously. In that way I managed to avoid doing\
-the same steps many times and reduce the possibility of errors.
+A powerful bash script which can add&commit, push, edit the context of specific files using the `sed` tool. That script was created
+for massive editing committing and pushing **the same changes** to many repos simultaneously. In that way unexpected typos and possible
+errors were avoided. Also reduce the times of doing same steps.
 
-The script was written in `3.2.57(1)-release (arm64-apple-darwin22)` bash version, but it will be updated in the future to use the\
-`4.3.46(1)-release (x86_64-apple-darwin14.5.0)`. To make sure you have the correct version in your machine, open a terminal and execute\
+The script was written in `3.2.57(1)-release (arm64-apple-darwin22)` bash version, but it will be updated in the future to use the
+`4.3.46(1)-release (x86_64-apple-darwin14.5.0)`. To make sure you have the correct version in your machine, open a terminal and execute
 the command:`bash --version`. Most probably if you are using Linux or MacOS, it is already installed.
 
 ## Quick setup of the script
-First clone the repo to your local machine. Open the `gitReposEditor.sh` with you favorite editor, and set the variable `rootFolder` with the folder\
-which contains all the folders/projects you want to edit and apply the same changes.\
-If there are some other folders in the same `rootFolder`, you can specify a search-pattern in order to look for the desired ones. To set the\
+First clone the repo to your local machine. Open the `gitReposEditor.sh` with you favorite editor, and set the variable `rootFolder` with the folder
+which contains all the folders/projects you want to edit and apply the same changes.
+If there are some other folders in the same `rootFolder`, you can specify a search-pattern in order to look for the desired ones. To set the
 search-pattern, modify the variable `searchPattern` with the appropriate match pattern so the script can find all the folders. Follow up to this 
 [wildcards-link](https://tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm) to find the appropriate combinations of wildcards in order to cover all the matching patterns.
 
@@ -18,7 +18,7 @@ search-pattern, modify the variable `searchPattern` with the appropriate match p
 > *Once again, make sure that you have set up correctly the path to `rootFolder` variable where the script can find all the folders with the matching pattern.*
 
 ## Ways of execution the script
-Now that everything is set up, there are several arguments that the script can be executed, but first make sure the script has execution permission. If not\
+Now that everything is set up, there are several arguments that the script can be executed, but first make sure the script has execution permission. If not
 enable it with the command `chmod +x gitReposEditor.sh`.
 
 | **Arguments**        | **Command**                              | Description                                                                                                                                                                                                                                                                                                                      |
@@ -35,9 +35,9 @@ enable it with the command `chmod +x gitReposEditor.sh`.
 ### YAML example
 
 ### Commit example
- First execute the script with the `--commit` parameter: `./gitReposEditor.sh --commit`. After that it will ask to input the desired commit message you want.\
- After entering the commit message, it will ask to provide the folders/paths you want to commit the changes to your local repo/s. If it is left empty it will be applied to all\
- the matching folders/paths based on the value of the `searchPattern` variable.\
+ First execute the script with the `--commit` parameter: `./gitReposEditor.sh --commit`. After that it will ask to input the desired commit message you want.
+ After entering the commit message, it will ask to provide the folders/paths you want to commit the changes to your local repo/s. If it is left empty it will be applied to all
+ the matching folders/paths based on the value of the `searchPattern` variable.
  Press one more time Enter, and you should see the changes to be committed.
 
 ```commandline
@@ -51,8 +51,8 @@ enable it with the command `chmod +x gitReposEditor.sh`.
 
 
 ### Push example
- After you have committed the changes to the desired folders/paths, you might want to push those changes to the remote branch on GitHub. The process is\
- the same. Again, execute the script, but this time with the `--push` parameter: `./gitReposEditor.sh --push`. You have to declare again the folders/paths\
+ After you have committed the changes to the desired folders/paths, you might want to push those changes to the remote branch on GitHub. The process is
+ the same. Again, execute the script, but this time with the `--push` parameter: `./gitReposEditor.sh --push`. You have to declare again the folders/paths
  where you want to push the changes. If it is left empty it will be applied to all the matching folders/paths based on the value of the `searchPattern` variable.
 
 ```commandline
@@ -61,11 +61,11 @@ enable it with the command `chmod +x gitReposEditor.sh`.
  If you leave it empty, the changes will be applied to all the project paths.
  Enter paths or leave it empty to apply to all the project folders: /Users/marinosnisiotis/Desktop/check, /Users/marinosnisiotis/Desktop/test, /Users/marinosnisiotis/Desktop/temp1
 ```
- As tou may notice in this example, I want to push the committed changes from all the previous declared folders/paths. If I wanted **not** to push to someone\
+ As tou may notice in this example, I want to push the committed changes from all the previous declared folders/paths. If I wanted **not** to push a repo
  I simply wouldn't declare it in the `push` paths.
 
 ### Specific example
- This option is for editing specific lines in files. The files **must** be the same, and have exactly the same lines and indentation. This is required as the `sed` tool\
+ This option is for editing specific lines in files. The files **must** be the same, and have exactly the same lines and indentation. This is required as the `sed` tool
  is very strict to this. For example lets say there are the 2 below files in the paths:
  
 >Desktop/projects/alpha/.github/workflows/test.yaml
@@ -165,10 +165,10 @@ What the script will do is to find the files, and change the line `10`. The fina
 
 ### Custom-command example
 
-This option is used in order to cover as many as possible commands that are useful for managing files in multiple folders. For example, you may need to remove or create files\
+This option is used in order to cover as many as possible commands that are useful for managing files in multiple folders. For example, you may need to remove or create files
 in many paths/folders, or you may need to copy the same file in many other folders. This option was created in order to facilitate these actions.
 
-In order to use this command, run the script with the `customCommand` option: `./gitReposEditor --customCommand`. After that you type the command you want to perform as it was\
+In order to use this command, run the script with the `customCommand` option: `./gitReposEditor --customCommand`. After that you type the command you want to perform as it was
 in the terminal, and then specify the path/s where this command should be applied.
 
 >Create new file example.
@@ -179,7 +179,7 @@ in the terminal, and then specify the path/s where this command should be applie
  If you leave it empty, the changes will be applied to all the project paths.
  Enter paths or leave it empty to apply to all the project folders: /Users/marinosnisiotis/Desktop, /Users/marinosnisiotis/Desktop/testFolder
 ```
-In the previous example, a new file `tempFile1` is created at the Desktop path/folder and at the test path/folder.\
+In the previous example, a new file `tempFile1` is created at the Desktop path/folder and at the test path/folder.
 With the same approach other commands can be executed.
 
 >Copy file from one path/folder to other/s
@@ -190,7 +190,7 @@ With the same approach other commands can be executed.
  If you leave it empty, the changes will be applied to all the project paths.
  Enter paths or leave it empty to apply to all the project folders: /Users/marinosnisiotis/Desktop/test1, /Users/marinosnisiotis/Desktop/test2, /Users/marinosnisiotis/Desktop/test3
 ```
-In the previous example, the file `tempFile1` was copied to three other paths/folders. First was declared the copy command `cp` and then the paths where this command should be\
+In the previous example, the file `tempFile1` was copied to three other paths/folders. First was declared the copy command `cp` and then the paths where this command should be
 applied.
 
 ### Supported commands
