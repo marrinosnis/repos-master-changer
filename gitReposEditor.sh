@@ -15,7 +15,7 @@ mapChoices=(
     "commit::commitCode"
     "push::pushCode"
     "specific::changeSpecificLine"
-    "customCommand::customFunc"
+    "customCommand::customCommandFunction"
 )
 
 # directories=$(find "$rootFolder" -maxdepth 1 -type d \( -name 'ctp-*' -o -name 'ctp.*' \) | wc -l)  # this command prints only the number of the folders, not the names, with the patter 'ctp-' or 'ctp.'
@@ -41,7 +41,6 @@ performAction() {
     shift
     shift
 
-    echo "The argsArray is ${argsArray[@]}"
 
     local customInputPaths="${@:-$ctpDirectories}"
     paths=($customInputPaths)       #make it array, so I can access each element individual
@@ -52,7 +51,7 @@ performAction() {
 
 statusCode(){
     local pathToFolder=$1
-    if [ "$printOnce" = false ]; then
+    if [[ "$printOnce" == false ]]; then
         echo    "--------------------------------------------------------|"
         echo    "Checking if there are any changes in the repo/s         |"
         echo -e "--------------------------------------------------------|\n"
@@ -112,18 +111,32 @@ changeSpecificLine(){
     # where the ${oldText} should be THE FIRST word of the ${lineToChange}, otherwise it change from the inputed word, until the end of the specific line.
 }
 
-customFunc(){  # change the name of the function. Is not very representative
+customCommandFunction(){  # change the name of the function. Is not very representative
     local pathToFolder=$1
     shift
 
     local arguments=("$@")
     command="${arguments[0]}"
 
-    for arg in "${arguments[@]:1}"; do
+    echo "The command is: $command"
+    case "$command" in
+    rm | touch | mkdir)
+        for arg in "${arguments[@]:1}"; do  # this loop is working for 'rm' and 'mkdir' commands. It is in loop, because for one path I might have multiple argumnets. e.g. mkdir ../Desktop/dir1 ../Desktop/dir2 ../Desktop/dir3
         "$command" "$pathToFolder/$arg"
-    done
-
-     
+        done
+        ;;
+    
+    cp | mv) 
+        fromDir="${arguments[1]}"
+        "$command" "$fromDir" ${pathToFolder}
+        ;;
+    
+    *)
+        echo "Unknown command"
+        exit 1
+        ;;
+    
+    esac
 }
 
 setSpecificPaths(){
@@ -157,16 +170,17 @@ while [[ $# -gt 0 ]]; do
             ;;
         
         --push)
+            setSpecificPaths
             echo "Push the change to the remote branch/repo"
             performAction "push" "" "${specifiedPaths[@]}"
             ;;
 
         --specific)
-            echo -e "Insert the number of the line you want to edit(14)"
+            echo -e "Insert the number of the line you want to edit"
             read line
             echo -e "Insert the text you want to be replaced on this line"
             read oldText
-            echo -e "Insert the new/first word of this line you want to change"
+            echo -e "Insert the new/first text that will replace the old one"
             read newText
             specificReplaceDetails="$line, $oldText, $newText"
             setSpecificPaths
@@ -175,11 +189,10 @@ while [[ $# -gt 0 ]]; do
 
         --customCommand)  # change the name of the parameter. Is not very representative
             read -p "Enter the custom command that you want to apply: " inputCmd
-            result=$(echo "$inputCmd" | tr ' ' ',')
-            echo "$result"
+            command=$(echo "$inputCmd" | tr ' ' ',')
             setSpecificPaths
 
-            performAction "customCommand" "$result" "${specifiedPaths[@]}"
+            performAction "customCommand" "$command" "${specifiedPaths[@]}"
             ;;
         
         *)
