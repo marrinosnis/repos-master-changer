@@ -1,7 +1,7 @@
 # repos-master-changer
 A powerful bash script which can add&commit, push, edit the context of specific files using the `sed` tool. That script was created
 for massive editing committing and pushing **the same changes** to many repos simultaneously. In that way unexpected typos and possible
-errors were avoided. Also reduce the times of doing same steps.
+errors were avoided. Also reduce the times of doing the same steps.
 
 The script was written in `3.2.57(1)-release (arm64-apple-darwin22)` bash version, but it will be updated in the future to use the
 `4.3.46(1)-release (x86_64-apple-darwin14.5.0)`. To make sure you have the correct version in your machine, open a terminal and execute
@@ -18,7 +18,7 @@ search-pattern, modify the variable `searchPattern` with the appropriate match p
 > *Once again, make sure that you have set up correctly the path to `rootFolder` variable where the script can find all the folders with the matching pattern.*
 
 ## Ways of execution the script
-Now that everything is set up, there are several arguments that the script can be executed, but first make sure the script has execution permission. If not
+Now that everything is set up, there are several arguments that the script can be executed with, but first make sure the script has execution permission. If not
 enable it with the command `chmod +x gitReposEditor.sh`.
 
 | **Arguments**        | **Command**                              | Description                                                                                                                                                                                                                                                                                                                      |
@@ -61,7 +61,7 @@ enable it with the command `chmod +x gitReposEditor.sh`.
  If you leave it empty, the changes will be applied to all the project paths.
  Enter paths or leave it empty to apply to all the project folders: /Users/marinosnisiotis/Desktop/check, /Users/marinosnisiotis/Desktop/test, /Users/marinosnisiotis/Desktop/temp1
 ```
- As tou may notice in this example, I want to push the committed changes from all the previous declared folders/paths. If I wanted **not** to push a repo
+ As you may notice in this example, I want to push the committed changes from all the previous declared folders/paths. If I wanted **not** to push a repo
  I simply wouldn't declare it in the `push` paths.
 
 ### Specific example
@@ -194,6 +194,8 @@ In the previous example, the file `tempFile1` was copied to three other paths/fo
 applied.
 
 ### Supported commands
+
+Currently the supported commands that the script can handle are:
 
 | **Command** | **Arguments**                   | **Purpose**                                       |
 |-------------|---------------------------------|---------------------------------------------------|
