@@ -58,9 +58,9 @@ statusCode(){
         printOnce=true
     fi
 
-    defaultStatusWithoutChanges=$(git -C "$pathToFolder" status -sb | head -n 1)
+    defaultStatusWithoutChanges=$(git -C "${pathToFolder}" status -sb | head -n 1)
     currentRepoStatus=$(git -C "${pathToFolder}" status --branch --porcelain)
-    currentBranch=$(git -C "$pathToFolder" rev-parse --abbrev-ref HEAD)
+    currentBranch=$(git -C "${pathToFolder}" rev-parse --abbrev-ref HEAD)
 
     if [ "$defaultStatusWithoutChanges" == "$currentRepoStatus" ]; then
         echo -e "The folder in the path:${NO_CHANGES_COLOR}"$path"${END_COLOR} has no changes in the current branch: ${BRANCH_COLOR}"$currentBranch"${END_COLOR}"
@@ -128,7 +128,16 @@ customCommandFunction(){  # change the name of the function. Is not very represe
     
     cp | mv) 
         fromDir="${arguments[1]}"
+        fileName=$(basename "$fromDir")
+        
+        packageName=$(. ./graphql.sh) #source the graphql.sh file, which find the packge name. SOS There must be only 'echo' and should be in last line, otherwise this solution doesn't work
+        # other solution is to source the ./graphql.sh file, and declare an emtpy variable: name="", which will be updated from the graphql file. I chose the above approach as it is more declerative
+        
+        echo "The name of the package from gitReposEditor.sh is ${packageName}"
+        
         "$command" "$fromDir" ${pathToFolder}
+
+        sed -i '' -e "/packageName: /s/[^:]*$/ '$packageName'/" "${pathToFolder}/${fileName}"
         ;;
     
     *)
@@ -175,7 +184,7 @@ while [[ $# -gt 0 ]]; do
             performAction "push" "" "${specifiedPaths[@]}"
             ;;
 
-        --specific)
+        --specificLine)
             echo -e "Insert the number of the line you want to edit"
             read line
             echo -e "Insert the text you want to be replaced on this line"
