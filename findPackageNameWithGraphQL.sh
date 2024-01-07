@@ -2,7 +2,6 @@
 
 repoName=$(basename `git -C "${pathToFolder}" rev-parse --show-toplevel`)
 
-
 #Let's break down the line 21, about the repoName expantion.
 #The whole graphQL query will be inside single quotes ( ' ' )
 #The arguments must be in a double quotes ( " " ). This is a rule from the graphQL query language. So the arguments, owner & name, must be in double quotes.
@@ -45,4 +44,3 @@ graphQL_response=$(curl -s -X POST \
 
 name=$(echo "$graphQL_response" | grep -o '"name":"[^"]*' | awk -F'"' '{print $4}')
 echo "$name"
-# echo  "The name of the package is: $name\n"
