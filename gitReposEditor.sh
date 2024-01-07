@@ -130,7 +130,7 @@ customCommandFunction(){  # change the name of the function. Is not very represe
         fromDir="${arguments[1]}"
         fileName=$(basename "$fromDir")
         
-        packageName=$(. ./graphql.sh) #source the graphql.sh file, which find the packge name. SOS There must be only 'echo' and should be in last line, otherwise this solution doesn't work
+        packageName=$(. ./findPackageNameWithGraphQL.sh) #source the graphql.sh file, which find the packge name. SOS There must be only 'echo' and should be in last line, otherwise this solution doesn't work
         # other solution is to source the ./graphql.sh file, and declare an emtpy variable: name="", which will be updated from the graphql file. I chose the above approach as it is more declerative
         
         echo "The name of the package from gitReposEditor.sh is ${packageName}"
