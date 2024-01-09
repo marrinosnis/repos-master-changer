@@ -43,7 +43,9 @@ performAction() {
 
 
     local customInputPaths="${@:-$ctpDirectories}"
+    [[ -z "$customInputPaths" ]] && customInputPaths="$ctpDirectories"
     paths=($customInputPaths)       #make it array, so I can access each element individual
+    echo "The ctpDirectories in performAction function is: ${paths[0]}"
     for path in "${paths[@]}"; do
        "$functionName" "$path" "${argsArray[@]}"
     done
@@ -97,7 +99,7 @@ changeYAMLRunningMode(){ #specific block of code I mean
 }
 
 changeSpecificLine(){
-    local pathToFolder=$1 # I can take only the first one path, because from the loop I will retrieve each time, only 1 path. So I'm ok! 
+    local pathToFolder=$1 
     shift
 
     local arguments=("$@")
@@ -130,7 +132,7 @@ customCommandFunction(){  # change the name of the function. Is not very represe
         fromDir="${arguments[1]}"
         fileName=$(basename "$fromDir")
         
-        packageName=$(. ./findPackageNameWithGraphQL.sh) #source the graphql.sh file, which find the packge name. SOS There must be only 'echo' and should be in last line, otherwise this solution doesn't work
+        packageName=$(. ./findPackageNameWithGraphQL.sh) #source the findPackageNameWithGraphQL.sh file, which find the packge name. SOS There must be only 'echo' and should be in last line, otherwise this solution doesn't work
         # other solution is to source the ./graphql.sh file, and declare an emtpy variable: name="", which will be updated from the graphql file. I chose the above approach as it is more declerative
         
         echo "The name of the package from gitReposEditor.sh is ${packageName}"
@@ -159,9 +161,8 @@ setSpecificPaths(){
     echo -e "The specifiedPaths contains: ${specifiedPaths[@]}\n"
 }
 
-# "/Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-artifact-publishing-plugin, /Users/marinosnisiotis/Desktop/Camelot_Projects/ctp-gradle-module-conventions-plugin"
-
 if [[ $# -eq 0 ]]; then
+    setSpecificPaths
     performAction "status" ""
 fi
 
@@ -172,7 +173,7 @@ while [[ $# -gt 0 ]]; do
             performAction "setYAMLRunningMode" "" "${specifiedPaths[@]}"
             ;;
 
-        --commit)  # should add to take the commit message, and do that for all, or, for the specified projects
+        --commit)
             read -p "Enter the commit message: " commitMessage
             setSpecificPaths
             performAction "commit" "$commitMessage" "${specifiedPaths[@]}" # it gives the commitMessage as the first parameter to performAction. If the paths, are not set, it will apply to all the matches of the pattern
@@ -211,19 +212,3 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
-
-# echo "From the "$path1" the changes are:"
-# echo
-# git -C "$path1" status
-
-# echo "From the "$path2" the changes are:"
-# echo
-# git -C "$path2" status
-
-# git $path11 status  # another way to perform the above printing
-# git $path22 status  # another way to perform the above printing
-
-# echo "Enter the commit message"
-# read message
-# git add .
-# git commit -m"${message}"
