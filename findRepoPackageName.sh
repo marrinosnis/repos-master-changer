@@ -2,7 +2,7 @@
 
 repoName=$(basename `git -C "${pathToFolder}" rev-parse --show-toplevel`)
 
-#Let's break down the line 21, about the repoName expantion.
+#Let's break down the line 22, about the repoName expantion.
 #The whole graphQL query will be inside single quotes ( ' ' )
 #The arguments must be in a double quotes ( " " ). This is a rule from the graphQL query language. So the arguments, owner & name, must be in double quotes.
 #Because the double quotes ( " " ) are inside the query, which is inside the singe quotes ( ' ' ), the double quotes have to be escaped ( \ ) in order to have the actual meaning of the double quote. 
