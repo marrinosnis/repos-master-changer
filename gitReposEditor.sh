@@ -5,15 +5,15 @@ CHANGES_COLOR="\033[4;91m"     # 91m is the Light Red
 BRANCH_COLOR="\033[4;33m"      # 33m is the Yellow color
 WARNING_COLOR="\033[31m"       # 31m is the Red color 
 END_COLOR="\033[0m"            #  0m is to revert back to default color
-rootFolder="../Desktop/Camelot_Projects"
-searchPattern=(-name 'ctp-*' -o -name 'ctp.*')
+rootFolder="../Desktop/Camelot_Projects/web-libraries"
+searchPattern=(-name 'ctp-*' -o -name 'il-*')
 printOnce=false
 specifiedPaths=""
+extendSpecifiedPaths=""
 mapChoices=(
     "status::statusCode"
     "setYAMLRunningMode::changeYAMLRunningMode"
-    "commit::commitCode"
-    "push::pushCode"
+    "git::gitFunction"
     "specific::changeSpecificLine"
     "customCommand::customCommandFunction"
 )
@@ -45,7 +45,7 @@ performAction() {
     local customInputPaths="${@:-$ctpDirectories}"
     [[ -z "$customInputPaths" ]] && customInputPaths="$ctpDirectories"
     paths=($customInputPaths)       #make it array, so I can access each element individual
-    echo "The ctpDirectories in performAction function is: ${paths[0]}"
+
     for path in "${paths[@]}"; do
        "$functionName" "$path" "${argsArray[@]}"
     done
@@ -83,19 +83,43 @@ commitCode(){
     git -C "$pathToFolder" commit -S -m "$gitCommitMessage"
 }
 
-pushCode(){
-    local pathToFolder=$1
-    git -C "$pathToFolder" push 
-}
 
 changeYAMLRunningMode(){ #specific block of code I mean
     local pathToFolder=$1
 
             #          the $ ensures it is at end of the line.
-    sed -i '' -e "/^on:$/s/$/\n  push:/" ${pathToFolder}/.github/workflows/delete-specific-packages.yml   # adds the 'push' under the 'on:'. So with this command we change the status to 'on: push', and can run in every git push in the repo
+    sed -i '' -e "/^on:$/s/$/\n  push:/" ${pathToFolder}   # adds the 'push' under the 'on:'. So with this command we change the status to 'on: push', and can run in every git push in the repo
             #  the ^ ensures it is in the beginning of the line
 
-    sed -i '' -e "/workflow_dispatch/,/default/s/^/#/" ${pathToFolder}/.github/workflows/delete-specific-packages.yml   # from the 'workflow_dispatch' -until(,)- 'default' word in the .yml -add(s)- in the -beginning(^)- the character #
+    sed -i '' -e "/workflow_dispatch/,/default/s/^/#/" ${pathToFolder}   # from the 'workflow_dispatch' -until(,)- 'default' word in the .yml -add(s)- in the -beginning(^)- the character #
+}
+
+gitFunction(){
+    local pathToFolder=$1
+    shift
+
+    local arguments=("$@")
+    IFS=' ' read -ra gitCommand <<< "$(echo "$arguments")"
+
+    if [[ "${gitCommand[1]}" == "commit" ]]; then
+        
+    for i in "${!gitCommand[@]}"; do
+        if [[ ${gitCommand[i]} == *"\""* ]]; then #find the first occurance of the '"' and
+            first_quote_index=$i                  #keep the index
+            break
+        fi
+    done
+    
+    commitMessage="${gitCommand[@]:$first_quote_index}"  # store the commit message, from that index till the end of the string
+    commitMessage=$(echo "$commitMessage" | tr -d '"')   # remove the ' " ' from the beginning and the end of the string, in order to save it in a correct form
+    commitCode "$pathToFolder" "$commitMessage"          # call the commitCode function, to perform the commit action
+    
+    else
+        gitCommandExecution="${gitCommand[0]} -C "${pathToFolder}" ${gitCommand[@]:1}"
+        ${gitCommand[0]} -C ${pathToFolder} ${gitCommand[@]:1}
+    fi
+    
+    
 }
 
 changeSpecificLine(){
@@ -107,7 +131,7 @@ changeSpecificLine(){
     oldText="${arguments[1]}"
     newText="${arguments[2]}"
 
-    sed -i '' -e "${lineToChange}s/${oldText}/${newText}/" ${pathToFolder}/.github/workflows/delete-specific-packages.yml  # with this line, I change specific oldText with specific newText
+    sed -i '' -e "${lineToChange}s/${oldText}/${newText}/" ${pathToFolder}  # with this line, I change specific oldText with specific newText
     # if I want to change the whole line with new line, I have to put the first word of that specific line, in order to keep the indentation, and the newText. The command will be:
     # sed -i '' -e "${lineToChange}s/${oldText}.*/${newText}/" ${directories[17]}/.github/workflows/delete-specific-packages.yml
     # where the ${oldText} should be THE FIRST word of the ${lineToChange}, otherwise it change from the inputed word, until the end of the specific line.
@@ -132,13 +156,11 @@ customCommandFunction(){  # change the name of the function. Is not very represe
         fromDir="${arguments[1]}"
         fileName=$(basename "$fromDir")
         
-        packageName=$(. ./findPackageNameWithGraphQL.sh) #source the findPackageNameWithGraphQL.sh file, which find the packge name. SOS There must be only 'echo' and should be in last line, otherwise this solution doesn't work
-        # other solution is to source the ./graphql.sh file, and declare an emtpy variable: name="", which will be updated from the graphql file. I chose the above approach as it is more declerative
-        
-        echo "The name of the package from gitReposEditor.sh is ${packageName}"
-        
         "$command" "$fromDir" ${pathToFolder}
 
+        packageName=$(. ./findRepoPackageName.sh) #source the findRepoPackageName.sh file, which find the packge name. SOS There must be only 'echo' and should be in last line, otherwise this solution doesn't work
+        # other solution is to source the ./graphql.sh file, and declare an emtpy variable: name="", which will be updated from the graphql file. I chose the above approach as it is more declerative
+        echo "The name of the package from gitReposEditor.sh is ${packageName}"
         sed -i '' -e "/packageName: /s/[^:]*$/ '$packageName'/" "${pathToFolder}/${fileName}"
         ;;
     
@@ -158,7 +180,14 @@ setSpecificPaths(){
     IFS=',' read -ra customPaths <<< "$(echo "$inputPaths" | tr -d '[:space:]')"
     specifiedPaths=${customPaths[@]}
 
+    if [[ -z "$inputPaths" ]]; then
+        echo -e "You have not imported any specific path/s. The default path for each folder based on the search pattern, is the root folder."
+        read -p "Enter a more specific path inside the root folder. If you leave it empty, the changes will be applied to root folder of the project." specificPathAfterRoot
+    fi
+
+    extendSpecifiedPaths=${specificPathAfterRoot}
     echo -e "The specifiedPaths contains: ${specifiedPaths[@]}\n"
+    echo -e "The specific paths after the root folder is: ${extendSpecifiedPaths}\n"
 }
 
 if [[ $# -eq 0 ]]; then
@@ -173,16 +202,10 @@ while [[ $# -gt 0 ]]; do
             performAction "setYAMLRunningMode" "" "${specifiedPaths[@]}"
             ;;
 
-        --commit)
-            read -p "Enter the commit message: " commitMessage
+        --git)
+            read -p "Enter the git command: " cmd
             setSpecificPaths
-            performAction "commit" "$commitMessage" "${specifiedPaths[@]}" # it gives the commitMessage as the first parameter to performAction. If the paths, are not set, it will apply to all the matches of the pattern
-            ;;
-        
-        --push)
-            setSpecificPaths
-            echo "Push the change to the remote branch/repo"
-            performAction "push" "" "${specifiedPaths[@]}"
+            performAction "git" "$cmd" "${specifiedPaths[@]}"
             ;;
 
         --specificLine)
