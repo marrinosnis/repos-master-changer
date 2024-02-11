@@ -11,12 +11,15 @@ printOnce=false
 specifiedPaths=""
 extendSpecifiedPaths=""
 mapChoices=(
-    "status::statusCode"
+    "status::customGitStatus"
     "setYAMLRunningMode::changeYAMLRunningMode"
     "git::gitFunction"
     "specific::changeSpecificLine"
     "customCommand::customCommandFunction"
 )
+inputToken="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"
+owner="camelotls"
+pathToFolder2="/Users/marinosnisiotis/Desktop/Camelot_Projects/libraries/ctp-core-errors"
 
 # directories=$(find "$rootFolder" -maxdepth 1 -type d \( -name 'ctp-*' -o -name 'ctp.*' \) | wc -l)  # this command prints only the number of the folders, not the names, with the patter 'ctp-' or 'ctp.'
 ctpDirectories=$(find "$rootFolder" -maxdepth 1 -type d \( "${searchPattern[@]}" \) -exec sh -c 'cd "{}" && pwd' \;)
@@ -51,7 +54,17 @@ performAction() {
     done
 }
 
-statusCode(){
+changeYAMLRunningMode(){ #specific block of code I mean
+    local pathToFolder=$1
+
+            #          the $ ensures it is at end of the line.
+    sed -i '' -e "/^on:$/s/$/\n  push:/" ${pathToFolder}   # adds the 'push' under the 'on:'. So with this command we change the status to 'on: push', and can run in every git push in the repo
+            #  the ^ ensures it is in the beginning of the line
+
+    sed -i '' -e "/workflow_dispatch/,/default/s/^/#/" ${pathToFolder}   # from the 'workflow_dispatch' -until(,)- 'default' word in the .yml -add(s)- in the -beginning(^)- the character #
+}
+
+customGitStatus(){
     local pathToFolder=$1
     if [[ "$printOnce" == false ]]; then
         echo    "--------------------------------------------------------|"
@@ -83,17 +96,6 @@ commitCode(){
     git -C "$pathToFolder" commit -S -m "$gitCommitMessage"
 }
 
-
-changeYAMLRunningMode(){ #specific block of code I mean
-    local pathToFolder=$1
-
-            #          the $ ensures it is at end of the line.
-    sed -i '' -e "/^on:$/s/$/\n  push:/" ${pathToFolder}   # adds the 'push' under the 'on:'. So with this command we change the status to 'on: push', and can run in every git push in the repo
-            #  the ^ ensures it is in the beginning of the line
-
-    sed -i '' -e "/workflow_dispatch/,/default/s/^/#/" ${pathToFolder}   # from the 'workflow_dispatch' -until(,)- 'default' word in the .yml -add(s)- in the -beginning(^)- the character #
-}
-
 gitFunction(){
     local pathToFolder=$1
     shift
@@ -103,16 +105,16 @@ gitFunction(){
 
     if [[ "${gitCommand[1]}" == "commit" ]]; then
         
-    for i in "${!gitCommand[@]}"; do
-        if [[ ${gitCommand[i]} == *"\""* ]]; then #find the first occurance of the '"' and
-            first_quote_index=$i                  #keep the index
-            break
-        fi
-    done
+        for i in "${!gitCommand[@]}"; do
+            if [[ ${gitCommand[i]} == *"\""* ]]; then   #find the first occurance of the '"' and
+                first_quote_index=$i                    #keep the index
+                break
+            fi
+        done
     
-    commitMessage="${gitCommand[@]:$first_quote_index}"  # store the commit message, from that index till the end of the string
-    commitMessage=$(echo "$commitMessage" | tr -d '"')   # remove the ' " ' from the beginning and the end of the string, in order to save it in a correct form
-    commitCode "$pathToFolder" "$commitMessage"          # call the commitCode function, to perform the commit action
+        commitMessage="${gitCommand[@]:$first_quote_index}"  # store the commit message, from that index till the end of the string
+        commitMessage=$(echo "$commitMessage" | tr -d '"')   # remove the ' " ' from the beginning and the end of the string, in order to save it in a correct form
+        commitCode "$pathToFolder" "$commitMessage"          # call the commitCode function, to perform the commit action
     
     else
         gitCommandExecution="${gitCommand[0]} -C "${pathToFolder}" ${gitCommand[@]:1}"
@@ -131,7 +133,7 @@ changeSpecificLine(){
     oldText="${arguments[1]}"
     newText="${arguments[2]}"
 
-    sed -i '' -e "${lineToChange}s/${oldText}/${newText}/" ${pathToFolder}  # with this line, I change specific oldText with specific newText
+    sed -i '' -e "${lineToChange}s/${oldText}/${newText}/" ${pathToFolder}${extendSpecifiedPaths}  # with this line, I change specific oldText with specific newText
     # if I want to change the whole line with new line, I have to put the first word of that specific line, in order to keep the indentation, and the newText. The command will be:
     # sed -i '' -e "${lineToChange}s/${oldText}.*/${newText}/" ${directories[17]}/.github/workflows/delete-specific-packages.yml
     # where the ${oldText} should be THE FIRST word of the ${lineToChange}, otherwise it change from the inputed word, until the end of the specific line.
@@ -187,7 +189,7 @@ setSpecificPaths(){
 
     extendSpecifiedPaths=${specificPathAfterRoot}
     echo -e "The specifiedPaths contains: ${specifiedPaths[@]}\n"
-    echo -e "The specific paths after the root folder is: ${extendSpecifiedPaths}\n"
+    echo -e "The specific paths under the root folder is: ${extendSpecifiedPaths}\n"
 }
 
 if [[ $# -eq 0 ]]; then
