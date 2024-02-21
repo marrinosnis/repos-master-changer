@@ -47,13 +47,13 @@ variable.
 
 ## Examples
 
-### no arguments
+### <ins>no arguments example</ins>
 When no arguments are provided then it displays a custom status of each project, based on the paths that are provided. Of course, there is the option to
 perform the `git status` command from the `--git` option (see below [git-command-example](git-command-example))
 
-### YAML example
+### <ins>YAML example</ins>
 
-### git command example
+### <ins>git command example</ins>
 In order to perform any git action/command, execute the script with the `--git` option
 ```commandline
  ./gitReposEditor.sh --git
@@ -62,7 +62,7 @@ In order to perform any git action/command, execute the script with the `--git` 
 At this point a git command is expected, as if it was written in a terminal e.g. `git commit -S -m "commit message"`.\
 Then, the appropriate paths should be declared. Again, if none provided the git command will be applied to all the matching folders.
 
-### specific example
+### <ins>specific example</ins>
 This option is for editing specific lines in files. The files **must** be the same, and have exactly the same lines and indentation. This is required as the `sed` tool
 is very strict to this. For example lets say there are the 2 below files in the paths:
  
@@ -161,7 +161,7 @@ What the script will do is to find the files, and change the line `10`. The fina
 > as the 21st line doesn't exist.
 
 
-### custom-command example
+### <ins>custom-command example</ins>
 
 This option is used in order to cover as many as possible commands that are useful for managing files in multiple folders. For example, you may need to remove or create files
 in many paths/folders, or you may need to copy the same file in many other folders. This option was created in order to facilitate these actions.
