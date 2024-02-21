@@ -1,16 +1,16 @@
 # repos-master-changer
 A powerful bash script which can add&commit, push, edit the context of specific files using the `sed` tool. That script was created
-for massive editing committing and pushing **the same changes** to many repos simultaneously. In that way unexpected typos and possible
-errors were avoided. Also reduce the times of doing the same steps.
+for massive editing, committing and pushing **the same changes** to many repos simultaneously. In that way unexpected typos and possible
+errors can be avoided. Also helps to reduce the times of doing the same steps.
 
 The script was written in `3.2.57(1)-release (arm64-apple-darwin22)` bash version, but it will be updated in the future to use the
-`4.3.46(1)-release (x86_64-apple-darwin14.5.0)`. To make sure you have the correct version in your machine, open a terminal and execute
+`4.3.46(1)-release (x86_64-apple-darwin14.5.0)`. To make sure you that have the correct version in your machine, open a terminal and execute
 the command:`bash --version`. Most probably if you are using Linux or MacOS, it is already installed.
 
 ## Quick setup of the script
 First clone the repo to your local machine. Open the `gitReposEditor.sh` with you favorite editor, and set the variable `rootFolder` with the folder
-which contains all the folders/projects you want to edit and apply the same changes.
-If there are some other folders in the same `rootFolder`, you can specify a search-pattern in order to look for the desired ones. To set the
+which contains all the folders/projects you want to edit and apply the same changes to them.
+If there are some other folders in the same `rootFolder`, you can specify a <ins>search-pattern</ins> in order to look for the desired ones. To set the
 search-pattern, modify the variable `searchPattern` with the appropriate match pattern so the script can find all the folders. Follow up to this 
 [wildcards-link](https://tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm) to find the appropriate combinations of wildcards in order to cover all the matching patterns.
 
@@ -18,53 +18,53 @@ search-pattern, modify the variable `searchPattern` with the appropriate match p
 > *Once again, make sure that you have set up correctly the path to `rootFolder` variable where the script can find all the folders with the matching pattern.*
 
 ## Ways of execution the script
-Now that everything is set up, there are several arguments that the script can be executed with, but first make sure the script has execution permission. If not
+Now that everything is set up, there are several arguments that the script can be executed with, but first make sure the script has execution permission. If not,
 enable it with the command `chmod +x gitReposEditor.sh`.
 
 | **Arguments**        | **Command**                              | Description                                                                                                                                                                                                                                                                                                                      |
 |----------------------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| *none*               | ./gitReposEditor.sh                      | Shows the git status of all the folders the pattern has found                                                                                                                                                                                                                                                                    |
+| *none*               | ./gitReposEditor.sh                      | Shows a custom git status of all the folders the pattern has found ([no arguments](#no-arguments))                                                                                                                                                                                                                               |
 | --setYAMLRunningMode | ./gitReposEditor.sh --setYAMLRunningMode | Change the running mode from `on:workflow_dispatch` to `on:push` to check the functionality of workflow.   ( [YAML example](#yaml-example) )                                                                                                                                                                                     |
-| --specific           | ./gitReposEditor.sh --specific           | Prompt the user to enter the specific`line` where the change will take place, the `old text` which will be replaced from the `new text`.<br> Manually input the paths where this change will be applied. If no paths are given it will be applied to all the matching pattern folders. ( [Specific example](#specific-example) ) |
-| --customCommand      | ./gitReposEditor.sh --customCommand      | Gives the ability to the user, to use a command that it not declared in the script, and can be applied to all the paths. ( [Custom-command example](#custom-command-example) )                                                                                                                                                   |
+| --git                | ./gitReposEditor.sh --git                | Allow user to perform any git command as if he was on terminal, to all the paths that he has specified ([git command example](#git-command-example))                                                                                                                                                                             |                                                                                                                                                 
+| --specific           | ./gitReposEditor.sh --specific           | Prompt the user to enter the specific`line` where the change will take place, the `old text` which will be replaced from the `new text`.<br> Manually input the paths where this change will be applied. If no paths are given it will be applied to all the matching pattern folders. ( [specific example](#specific-example) ) |
+| --customCommand      | ./gitReposEditor.sh --customCommand      | Gives the ability to the user, to use a command that it not declared in the script, and can be applied to all the paths. ( [custom-command example](#custom-command-example) )                                                                                                                                                   |
+
+## Specify paths
+After choosing an option, the user is asked to provide to which paths the previous selected option will be applied.
+```commandline
+You can provide which paths you want to apply changes, by separating them with comma (,).
+If you leave it empty, the changes will be applied to all the project paths.
+Enter paths or leave it empty to apply to all the project folders:
+```
+If none path provided, then the user is notified again that the selected action will be applied to all the root paths of the projects and
+prompted to provide more specific path under the root path.
+```commandline
+You have not imported any specific path/s. The default path for each folder based on the search pattern, is the root folder.
+Enter a more specific path inside the root folder. If you leave it empty, the changes will be applied to root folder of the project.
+```
+If it is also left empty then the selected option will be applied to the root path of all the path/folders that are found from the `searchPattern`
+variable.
 
 ## Examples
 
+### no arguments
+When no arguments are provided then it displays a custom status of each project, based on the paths that are provided. Of course, there is the option to
+perform the `git status` command from the `--git` option (see below [git-command-example](git-command-example))
+
 ### YAML example
 
-### Commit example
- First execute the script with the `--commit` parameter: `./gitReposEditor.sh --commit`. After that it will ask to input the desired commit message you want.
- After entering the commit message, it will ask to provide the folders/paths you want to commit the changes to your local repo/s. If it is left empty it will be applied to all
- the matching folders/paths based on the value of the `searchPattern` variable.
- Press one more time Enter, and you should see the changes to be committed.
-
+### git command example
+In order to perform any git action/command, execute the script with the `--git` option
 ```commandline
- ./gitReposEditor.sh --commit
- Enter the commit message: This is a test commit message
- 
- You can provide which paths you want to apply changes, by separating them with comma (,).
- If you leave it empty, the changes will be applied to all the project paths.
- Enter paths or leave it empty to apply to all the project folders: /Users/marinosnisiotis/Desktop/check, /Users/marinosnisiotis/Desktop/test, /Users/marinosnisiotis/Desktop/temp1 
+ ./gitReposEditor.sh --git
+ Enter the git command:
 ```
+At this point a git command is expected, as if it was written in a terminal e.g. `git commit -S -m "commit message"`.\
+Then, the appropriate paths should be declared. Again, if none provided the git command will be applied to all the matching folders.
 
-
-### Push example
- After you have committed the changes to the desired folders/paths, you might want to push those changes to the remote branch on GitHub. The process is
- the same. Again, execute the script, but this time with the `--push` parameter: `./gitReposEditor.sh --push`. You have to declare again the folders/paths
- where you want to push the changes. If it is left empty it will be applied to all the matching folders/paths based on the value of the `searchPattern` variable.
-
-```commandline
- ./gitReposEditor.sh --push
- You can provide which paths you want to apply changes, by separating them with comma (,).
- If you leave it empty, the changes will be applied to all the project paths.
- Enter paths or leave it empty to apply to all the project folders: /Users/marinosnisiotis/Desktop/check, /Users/marinosnisiotis/Desktop/test, /Users/marinosnisiotis/Desktop/temp1
-```
- As you may notice in this example, I want to push the committed changes from all the previous declared folders/paths. If I wanted **not** to push a repo
- I simply wouldn't declare it in the `push` paths.
-
-### Specific example
- This option is for editing specific lines in files. The files **must** be the same, and have exactly the same lines and indentation. This is required as the `sed` tool
- is very strict to this. For example lets say there are the 2 below files in the paths:
+### specific example
+This option is for editing specific lines in files. The files **must** be the same, and have exactly the same lines and indentation. This is required as the `sed` tool
+is very strict to this. For example lets say there are the 2 below files in the paths:
  
 >Desktop/projects/alpha/.github/workflows/test.yaml
 ```yaml
@@ -156,12 +156,12 @@ What the script will do is to find the files, and change the line `10`. The fina
 ```
 > [!WARNING]
 > 1) The change happened on the same line for the same element. If at line 10 of the `test.yaml` file that is in the `/beta/` path didn't have this text, the 
-> replacement would have failed. So, that means the exactly same text has to be at the same line in order the replacement 
+> replacement would have failed. So, that means the exactly same text has to be at the same line in order the replacement to be successful.
 > 2) If the line doesn't exist at all, also the replacement would fail. For example if the change was about to happen in the 21st line of the files, that wouldn't be applicable
 > as the 21st line doesn't exist.
 
 
-### Custom-command example
+### custom-command example
 
 This option is used in order to cover as many as possible commands that are useful for managing files in multiple folders. For example, you may need to remove or create files
 in many paths/folders, or you may need to copy the same file in many other folders. This option was created in order to facilitate these actions.
@@ -188,12 +188,12 @@ With the same approach other commands can be executed.
  If you leave it empty, the changes will be applied to all the project paths.
  Enter paths or leave it empty to apply to all the project folders: /Users/marinosnisiotis/Desktop/test1, /Users/marinosnisiotis/Desktop/test2, /Users/marinosnisiotis/Desktop/test3
 ```
-In the previous example, the file `tempFile1` was copied to three other paths/folders. First was declared the copy command `cp` and then the paths where this command should be
+In this example, the file `tempFile1` was copied to three other paths/folders. First was declared the copy command `cp` and then the paths where this command should be
 applied.
 
 ### Supported commands
 
-Currently the supported commands that the script can handle are:
+Currently, the supported commands that the script can handle are:
 
 | **Command** | **Arguments**                   | **Purpose**                                       |
 |-------------|---------------------------------|---------------------------------------------------|
