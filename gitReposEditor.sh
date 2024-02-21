@@ -23,12 +23,12 @@ githubUrl="https://raw.githubusercontent.com/marrinosnis/repository-package-name
 inputToken="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"  # here replace this token with new one
 owner="camelotls"
 
-source ./customGitStatusFunction.sh
-source ./gitCommandsFunction.sh
-source ./changeSpecificLineFunction.sh
-source ./setSpecificPathsFunction.sh
-source ./changeYAMLFunction.sh
-source ./customCommandFunction.sh
+source ./helper-functions/customGitStatusFunction.sh
+source ./helper-functions/gitCommandsFunction.sh
+source ./helper-functions/changeSpecificLineFunction.sh
+source ./helper-functions/setSpecificPathsFunction.sh
+source ./helper-functions/changeYAMLFunction.sh
+source ./helper-functions/customCommandFunction.sh
 
 ctpDirectories=$(find "$rootFolder" -maxdepth 1 -type d \( "${searchPattern[@]}" \) -exec sh -c 'cd "{}" && pwd' \;)
 
