@@ -37,7 +37,7 @@ Changes to be committed:
 
     # 4 index: Git message for nothing to commit, working tree clean ready for push
     "On branch create-helper-functions
-Your branch is ahead of 'origin/create-helper-functions' by 1 commits.
+Your branch is ahead of 'origin/create-helper-functions' by 1 commit.
   (use \"git push\" to publish your local commits)
 
 nothing to commit, working tree clean"
