@@ -24,7 +24,7 @@ gitFunction(){
         done
     
         commitMessage="${gitCommand[@]:$first_quote_index}"  # store the commit message, from that index till the end of the string
-        commitMessage=$(echo "$commitMessage" | tr -d '"')   # remove the ' " ' from the beginning and the end of the string, in order to save it in a correct form
+        commitMessage=$(echo "$commitMessage" | tr -d '"')   # remove the double quotes ' " ' from the beginning and the end of the string, in order to save it in a correct form
         commitCode "$pathToFolder" "$commitMessage"          # call the commitCode function, to perform the commit action
     
     else

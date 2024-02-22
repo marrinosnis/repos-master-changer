@@ -6,8 +6,8 @@ BRANCH_COLOR="\033[4;33m"      # 33m is the Yellow color
 WARNING_COLOR="\033[31m"       # 31m is the Red color 
 END_COLOR="\033[0m"            #  0m is to revert back to default color
 
-rootFolder="../Desktop/Camelot_Projects/web-libraries"
-searchPattern=(-name 'ctp-*' -o -name 'il-*')
+rootFolder="/Users/marinosnisiotis"
+searchPattern=(-name 'repos-master-changer')
 printOnce=false
 specifiedPaths=""
 extendSpecifiedPaths=""
@@ -63,7 +63,6 @@ performAction() {
 }
 
 if [[ $# -eq 0 ]]; then
-    setSpecificPaths
     performAction "status" ""
 fi
 
