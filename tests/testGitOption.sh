@@ -5,7 +5,6 @@ function oneTimeSetUp(){
 }
 
 function testGitAddCommand(){
-    
     touch temp.txt
     untrackedNewFile=$(git status)
     assertContains "${untrackedNewFile}" "${mapExpectedMessages[0]}"

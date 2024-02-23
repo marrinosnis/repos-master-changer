@@ -41,4 +41,36 @@ Your branch is ahead of 'origin/create-helper-functions' by 1 commit.
   (use \"git push\" to publish your local commits)
 
 nothing to commit, working tree clean"
+
+    # 5 index: Create .txt file with this content
+"This is a sample text file.
+It contains a text about cars.
+The first car was created in
+
+1886 and his creator was the Carl Benz.
+The today's famous Mercedes Benz company."
+
+    # 6 index: Same context as above with changed the last word from company -> industry
+"This is a sample text file.
+It contains a text about cars.
+The first car was created in
+
+1886 and his creator was the Carl Benz.
+The today's famous Mercedes Benz industry."
+
+    # 7 index: Same context as the index 5, with changed the date from 1886 -> 1998
+"This is a sample text file.
+It contains a text about cars.
+The first car was created in
+
+1998 and his creator was the Carl Benz.
+The today's famous Mercedes Benz company."
+
+    # 7 index: Same context as the index 5, with changed the date from 1886 -> 1998
+"This is a sample text file.
+It contains a text about cars.
+The first car was created in
+
+1998 and his creator was the Carl Benz.
+The today's famous Mercedes Benz industry."
 )
