@@ -5,9 +5,7 @@ function oneTimeSetUp(){
 
     statusResponse=$(git status)
 
-    if [[ "${statusResponse}" == *"nothing to commit, working tree clean"* ]]; then
-        continue
-    else
+    if [[ ! "${statusResponse}" == *"nothing to commit, working tree clean"* ]]; then
         git stash save -m "perform a temp save"
     fi
 }
@@ -30,9 +28,7 @@ function testCustomGitStatusFunction(){
 
 function oneTimeTearDown() {
     
-    if [[ "${statusResponse}" == *"nothing to commit, working tree clean"* ]]; then
-        continue
-    else
+    if [[ ! "${statusResponse}" == *"nothing to commit, working tree clean"* ]]; then
         git stash pop
     fi
 }
