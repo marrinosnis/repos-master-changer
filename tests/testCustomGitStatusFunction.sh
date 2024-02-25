@@ -23,7 +23,7 @@ function testCustomGitStatusFunction(){
 }
 
 function oneTimeTearDown() {
-    git stash apply
+    git stash pop
 }
 
 shift $#
