@@ -3,7 +3,13 @@ source ./tests/messages.sh
 function oneTimeSetUp(){
     script="./gitReposEditor.sh"
 
-    git stash save -m "perform a temp save"
+    statusResponse=$(git status)
+
+    if [[ "${statusResponse}" == *"nothing to commit, working tree clean"* ]]; then
+        continue
+    else
+        git stash save -m "perform a temp save"
+    fi
 }
 
 function testCustomGitStatusFunction(){
@@ -23,7 +29,12 @@ function testCustomGitStatusFunction(){
 }
 
 function oneTimeTearDown() {
-    git stash pop
+    
+    if [[ "${statusResponse}" == *"nothing to commit, working tree clean"* ]]; then
+        continue
+    else
+        git stash pop
+    fi
 }
 
 shift $#
