@@ -65,12 +65,4 @@ The first car was created in
 
 1998 and his creator was the Carl Benz.
 The today's famous Mercedes Benz company."
-
-    # 7 index: Same context as the index 5, with changed the date from 1886 -> 1998
-"This is a sample text file.
-It contains a text about cars.
-The first car was created in
-
-1998 and his creator was the Carl Benz.
-The today's famous Mercedes Benz industry."
 )
