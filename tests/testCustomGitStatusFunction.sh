@@ -2,6 +2,8 @@ source ./tests/messages.sh
 
 function oneTimeSetUp(){
     script="./gitReposEditor.sh"
+
+    git stash save -m "perform a temp save"
 }
 
 function testCustomGitStatusFunction(){
@@ -18,6 +20,10 @@ function testCustomGitStatusFunction(){
 
     git restore --staged temp.txt
     rm temp.txt
+}
+
+function oneTimeTearDown() {
+    git stash apply
 }
 
 shift $#
