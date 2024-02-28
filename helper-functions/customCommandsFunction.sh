@@ -1,4 +1,4 @@
-customCommandFunction(){  # change the name of the function. Is not very representative
+customCommandsFunction(){  # change the name of the function. Is not very representative
     local pathToFolder=$1
     shift
 
