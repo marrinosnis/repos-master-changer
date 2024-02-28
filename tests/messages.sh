@@ -65,4 +65,36 @@ The first car was created in
 
 1998 and his creator was the Carl Benz.
 The today's famous Mercedes Benz company."
+
+   # 8 index: Script message with the --customCommand option and 'touch' command
+   "You can provide which paths you want to apply changes, by separating them with comma (,).
+If you leave it empty, the changes will be applied to all the project paths. 
+The specifiedPaths contains: tests/
+
+The specific paths under the root folder is: 
+
+The command is: touch"
+
+  # 9 index: Script message with the --customCommand option and 'copy' command
+  "You can provide which paths you want to apply changes, by separating them with comma (,).
+If you leave it empty, the changes will be applied to all the project paths. 
+The specifiedPaths contains: tests/removeFileFolder2 tests/removeFileFolder3
+
+The specific paths under the root folder is: 
+
+The command is: cp
+The name of the package from gitReposEditor.sh is 
+The command is: cp
+The name of the package from gitReposEditor.sh is "
+
+  # 10 index: Script message with the --customCommand option and 'rm' command
+  "You can provide which paths you want to apply changes, by separating them with comma (,).
+If you leave it empty, the changes will be applied to all the project paths. 
+The specifiedPaths contains: tests/removeFileFolder1 tests/removeFileFolder2 tests/removeFileFolder3
+
+The specific paths under the root folder is: 
+
+The command is: rm
+The command is: rm
+The command is: rm"
 )

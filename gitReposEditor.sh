@@ -16,7 +16,7 @@ mapChoices=(
     "setYAMLRunningMode::changeYAMLRunningMode"
     "git::gitFunction"
     "specific::changeSpecificLine"
-    "customCommand::customCommandFunction"
+    "customCommand::customCommandsFunction"
 )
 
 githubUrl="https://raw.githubusercontent.com/marrinosnis/repository-package-name/update-READEME-file/findRepoPackageName.sh"
@@ -28,7 +28,7 @@ source ./helper-functions/gitCommandsFunction.sh
 source ./helper-functions/changeSpecificLineFunction.sh
 source ./helper-functions/setSpecificPathsFunction.sh
 source ./helper-functions/changeYAMLFunction.sh
-source ./helper-functions/customCommandFunction.sh
+source ./helper-functions/customCommandsFunction.sh
 
 ctpDirectories=$(find "$rootFolder" -maxdepth 1 -type d \( "${searchPattern[@]}" \) -exec sh -c 'cd "{}" && pwd' \;)
 
