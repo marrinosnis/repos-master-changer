@@ -6,7 +6,8 @@ BRANCH_COLOR="\033[4;33m"      # 33m is the Yellow color
 WARNING_COLOR="\033[31m"       # 31m is the Red color 
 END_COLOR="\033[0m"            #  0m is to revert back to default color
 
-rootFolder="/home/marinos"
+rootFolder=$(dirname "$(pwd)")
+echo "the rootfolder is ${rootFolder}"
 searchPattern=(-name 'repos-master-changer')
 printOnce=false
 specifiedPaths=""
