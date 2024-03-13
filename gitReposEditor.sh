@@ -6,7 +6,7 @@ BRANCH_COLOR="\033[4;33m"      # 33m is the Yellow color
 WARNING_COLOR="\033[31m"       # 31m is the Red color 
 END_COLOR="\033[0m"            #  0m is to revert back to default color
 
-rootFolder="/Users/marinosnisiotis"
+rootFolder="/home/marinos"
 searchPattern=(-name 'repos-master-changer')
 printOnce=false
 specifiedPaths=""
@@ -21,7 +21,7 @@ mapChoices=(
 
 githubUrl="https://raw.githubusercontent.com/marrinosnis/repository-package-name/update-READEME-file/findRepoPackageName.sh"
 inputToken="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"  # here replace this token with new one
-owner="camelotls"
+owner="marrinosnis"
 
 source ./helper-functions/customGitStatusFunction.sh
 source ./helper-functions/gitCommandsFunction.sh
