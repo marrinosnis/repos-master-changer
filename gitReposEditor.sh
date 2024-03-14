@@ -6,8 +6,9 @@ BRANCH_COLOR="\033[4;33m"      # 33m is the Yellow color
 WARNING_COLOR="\033[31m"       # 31m is the Red color 
 END_COLOR="\033[0m"            #  0m is to revert back to default color
 
-rootFolder=$(dirname "$(pwd)")
-searchPattern=(-name 'repos-master-changer')
+# rootFolder=$(dirname "$(pwd)")
+rootFolder=("/home/marinos/")
+searchPattern=(-name 'repository-package-name')
 printOnce=false
 specifiedPaths=""
 extendSpecifiedPaths=""
@@ -19,7 +20,7 @@ mapChoices=(
     "customCommand::customCommandsFunction"
 )
 
-githubUrl="https://raw.githubusercontent.com/marrinosnis/repository-package-name/update-READEME-file/findRepoPackageName.sh"
+githubUrl="https://raw.githubusercontent.com/marrinosnis/repository-package-name/master/findRepoPackageName.sh"
 inputToken="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"  # here replace this token with new one
 owner="marrinosnis"
 

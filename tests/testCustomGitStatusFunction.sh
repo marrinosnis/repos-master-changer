@@ -9,7 +9,7 @@ function oneTimeSetUp(){
         git stash save -m "perform a temp save"                                        # changes, in order to run the tests, with the expected messages in the assertions. 
     fi                                                                                 # The current scenario, is supposed to run on CI/CD where no changes would be, as 
 }                                                                                      # everything will be commited. Locally, instead, there might be differences, so in order to run
-                                                                                       # the test locally successful, a stash must be done.
+                                                                                       # the test locally successfully, a stash must be done.
 function testCustomGitStatusFunction(){
     touch temp.txt
     
@@ -27,8 +27,8 @@ function testCustomGitStatusFunction(){
 }
 
 function oneTimeTearDown() {
-                                                                                       # If there are no changes as in the beggining of the test, then it's crucial to ensure that no stashes
-    if [[ ! "${statusResponse}" == *"nothing to commit, working tree clean"* ]]; then  # are applied: a) if a stash already exists, it should not be applied, preserving the current state
+                                                                                       # If there are no changes as in the beggining of the test, then it's crucial to ensure that NO stashes
+    if [[ ! "${statusResponse}" == *"nothing to commit, working tree clean"* ]]; then  # are applied for two reasons: a) if a stash already exists, it should not be applied, preserving the current state
         git stash pop                                                                  # as it was in the latest commit, b) if there are no stashes, pop action would result in failure
     fi
 }
