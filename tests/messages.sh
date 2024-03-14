@@ -23,7 +23,7 @@ Checking if there are any changes in the repo/s         |
 --------------------------------------------------------|
 
 
-The changes in the path: /Users/marinosnisiotis/repos-master-changer in the branch create-helper-functions are
+The changes in the path: /home/marinos/repos-master-changer in the branch create-helper-functions are
 
 On branch create-helper-functions
 Your branch is up to date with 'origin/create-helper-functions'.

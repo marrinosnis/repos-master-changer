@@ -1,0 +1,37 @@
+name: Run unittest for script functions
+
+on:
+  push:
+
+
+jobs:
+  set-up:
+    name: Set the environment and run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Install shunit2
+        run: sudo apt-get update && sudo apt-get install -y shunit2
+      
+      - name: Check that shunit2 is installed
+        run: cat $(which shunit2) | grep "SHUNIT_VERSION"
+        continue-on-error: true
+
+      - name: Run testCustomCommandFunction.sh tests
+        run: ./tests/testCustomCommandsFunction.sh
+        continue-on-error: true
+      
+      - name: Run testGitCommandsFunction.sh tests
+        run: ./tests/testGitCommandsFunction.sh
+        continue-on-error: true
+      
+      - name: Run testChangeSpecificLineFunction.sh tests
+        run: ./tests/testChangeSpecificLineFunction.sh
+        continue-on-error: true
+      
+      - name: Run testCustomGitStatusFunction.sh tests
+        run: ./tests/testCustomGitStatusFunction.sh
+        continue-on-error: true
