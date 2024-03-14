@@ -8,7 +8,7 @@ jobs:
   set-up:
     name: Set the environment and run tests
     runs-on: ubuntu-latest
-    continue-on-error: true
+    fail-fast: false
 
     steps:
       - name: Check out repository code
