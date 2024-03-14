@@ -8,8 +8,8 @@ jobs:
   set-up:
     name: Set the environment and run tests
     runs-on: ubuntu-latest
-    continue-or-error: true
-    
+    continue-on-error: true
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
