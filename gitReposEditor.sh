@@ -7,7 +7,7 @@ WARNING_COLOR="\033[31m"       # 31m is the Red color
 END_COLOR="\033[0m"            #  0m is to revert back to default color
 
 rootFolder=$(dirname "$(pwd)")
-searchPattern=(-name 'repository-package-name')
+searchPattern=(-name 'repos-master-changer')
 printOnce=false
 specifiedPaths=""
 extendSpecifiedPaths=""
