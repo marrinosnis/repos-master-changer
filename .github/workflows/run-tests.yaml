@@ -3,6 +3,10 @@ name: Run unittest for script functions
 on:
   push:
 
+env:
+  GITCONFIG_NAME: ${{ secrets.GITCONFIG_NAME }}
+  GITCONFIG_EMAIL: ${{ secrets.GITCONFIG_EMAIL }}
+  GITCONFIG_GPG: ${{ secrets.GIT_GPG }}
 
 jobs:
   set-up:
@@ -16,6 +20,15 @@ jobs:
       - name: Install shunit2
         run: sudo apt-get update && sudo apt-get install -y shunit2
       
+      - name: Create the .gitconfig file for the testGitCommandsFunction.sh
+        run: | 
+        echo "[user]
+	                  email = ${{ env.GITCONFIG_EMAIL }}
+	                  name = ${{ env.GITCONFIG_NAME }}
+                    signingkey = ${{ env.GITCONFIG_GPG }}" > ~/.gitconfig
+        echo "The name is " ${{ env.GITCONFIG_NAME }}
+
+
       - name: Check that shunit2 is installed
         run: cat $(which shunit2) | grep "SHUNIT_VERSION"
         continue-on-error: true
