@@ -19,6 +19,14 @@ jobs:
 
       - name: Install shunit2
         run: sudo apt-get update && sudo apt-get install -y shunit2
+      
+      - name: check the default status without changes
+        run: |
+          git -C . status -sb | head -n 1
+      
+      - name: check the current status of the branch
+        run: |
+          git -C . status --branch --porcelain
 
       - name: Check that shunit2 is installed
         run: cat $(which shunit2) | grep "SHUNIT_VERSION"
