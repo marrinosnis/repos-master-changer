@@ -22,12 +22,8 @@ jobs:
       
       - name: Create the .gitconfig file for the testGitCommandsFunction.sh
         run: |
-          echo "[user]
-	        email = ${{ env.GITCONFIG_EMAIL }}
-	        name = ${{ env.GITCONFIG_NAME }}
-          signingkey = ${{ env.GITCONFIG_GPG }}" > ~/.gitconfig
-          echo "the name is " ${{ env.GITCONFIG_NAME }}
-
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
 
       - name: Check that shunit2 is installed
         run: cat $(which shunit2) | grep "SHUNIT_VERSION"
