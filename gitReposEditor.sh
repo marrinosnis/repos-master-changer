@@ -58,7 +58,6 @@ performAction() {
     paths=($customInputPaths)       #make it array, so I can access each element individual
 
     for path in "${paths[@]}"; do
-    echo "the path is: ${path}"
        "$valueChoiceFunctionName" "$path" "${argsArray[@]}"
     done
 }
