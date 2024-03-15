@@ -3,7 +3,6 @@ name: Run unittest for script functions
 on:
   push:
 
-
 jobs:
   set-up:
     name: Set the environment and run tests
@@ -20,12 +19,21 @@ jobs:
         run: cat $(which shunit2) | grep "SHUNIT_VERSION"
         continue-on-error: true
 
+      - name: Impoert GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Run testGitCommandsFunction.sh tests
+        run: |
+          ./tests/testGitCommandsFunction.sh
+        continue-on-error: true  
+
       - name: Run testCustomCommandFunction.sh tests
         run: ./tests/testCustomCommandsFunction.sh
-        continue-on-error: true
-      
-      - name: Run testGitCommandsFunction.sh tests
-        run: ./tests/testGitCommandsFunction.sh
         continue-on-error: true
       
       - name: Run testChangeSpecificLineFunction.sh tests
