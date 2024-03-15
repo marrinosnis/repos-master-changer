@@ -24,6 +24,7 @@ The specific paths under the root folder is: "
 Checking if there are any changes in the repo/s         |
 --------------------------------------------------------|
 
+The folder in the path:/home/runner/work/repos-master-changer has no changes in the current branch: 
 
 The changes in the path: "${currentPath}" in the branch "${currentBranch}" are
 

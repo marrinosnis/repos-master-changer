@@ -19,12 +19,6 @@ jobs:
 
       - name: Install shunit2
         run: sudo apt-get update && sudo apt-get install -y shunit2
-      
-      - name: Create the .gitconfig file for the testGitCommandsFunction.sh
-        run: |
-          git config user.name "${{ env.GITCONFIG_NAME }}"
-          git config user.email "${{ env.GITCONFIG_EMAIL }}"
-          git config user.signingkey "${{ env.GITCONFIG_GPG }}"
 
       - name: Check that shunit2 is installed
         run: cat $(which shunit2) | grep "SHUNIT_VERSION"
