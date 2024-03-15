@@ -21,12 +21,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y shunit2
       
       - name: Create the .gitconfig file for the testGitCommandsFunction.sh
-        run: | 
-        echo "[user]
-	                  email = ${{ env.GITCONFIG_EMAIL }}
-	                  name = ${{ env.GITCONFIG_NAME }}
-                    signingkey = ${{ env.GITCONFIG_GPG }}" > ~/.gitconfig
-        echo "The name is " ${{ env.GITCONFIG_NAME }}
+        run: |
+          echo "[user]
+	email = ${{ env.GITCONFIG_EMAIL }}
+	name = ${{ env.GITCONFIG_NAME }}
+  signingkey = ${{ env.GITCONFIG_GPG }}" > ~/.gitconfig
+          echo "the name is " ${{ env.GITCONFIG_NAME }}
 
 
       - name: Check that shunit2 is installed
