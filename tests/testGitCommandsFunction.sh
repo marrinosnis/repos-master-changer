@@ -2,6 +2,10 @@ source ./tests/messages.sh
 
 function oneTimeSetUp(){
     script="./gitReposEditor.sh"
+
+    echo "[user]
+	email = mr.nisiotis@gmail.com
+	name = marinos" > ~/.gitconfig
 }
 
 function testGitAddCommand(){
@@ -54,6 +58,9 @@ function testGitCommitCommand() {
     rm temp.txt
 }
 
+# function oneTimeTearDown() {
+#     rm .gitconfig2
+# }
 
 
 shift $#
