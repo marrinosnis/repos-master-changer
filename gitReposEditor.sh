@@ -58,6 +58,7 @@ performAction() {
     paths=($customInputPaths)       #make it array, so I can access each element individual
 
     for path in "${paths[@]}"; do
+    echo "the path is: ${path}"
        "$valueChoiceFunctionName" "$path" "${argsArray[@]}"
     done
 }
@@ -80,7 +81,7 @@ while [[ $# -gt 0 ]]; do
             ;;
 
         --specificLine)
-            echo -e "Insert the number of the line you want to edit"
+            echo -e "Insert the number of the line yo u want to edit"
             read line
             echo -e "Insert the text you want to be replaced on this line"
             read oldText

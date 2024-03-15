@@ -12,9 +12,9 @@ customGitStatus(){
     currentBranch=$(git -C "${pathToFolder}" rev-parse --abbrev-ref HEAD)
 
     if [ "$defaultStatusWithoutChanges" == "$currentRepoStatus" ]; then
-        echo -e "The folder in the path:${NO_CHANGES_COLOR}"$path"${END_COLOR} has no changes in the current branch: ${BRANCH_COLOR}"$currentBranch"${END_COLOR}"
+        echo -e "The folder in the path:${NO_CHANGES_COLOR}"$pathToFolder"${END_COLOR} has no changes in the current branch: ${BRANCH_COLOR}"$currentBranch"${END_COLOR}"
     else
-        echo -e "\nThe changes in the path: ${CHANGES_COLOR}"$path"${END_COLOR} in the branch ${BRANCH_COLOR}"$currentBranch"${END_COLOR} are\n"
+        echo -e "\nThe changes in the path: ${CHANGES_COLOR}"$pathToFolder"${END_COLOR} in the branch ${BRANCH_COLOR}"$currentBranch"${END_COLOR} are\n"
         git -C "$pathToFolder" status
     echo "------------------------------------------------------------------------------------------------------------------------"
     echo "------------------------------------------------------------------------------------------------------------------------"
