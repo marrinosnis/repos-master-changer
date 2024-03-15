@@ -23,9 +23,9 @@ jobs:
       - name: Create the .gitconfig file for the testGitCommandsFunction.sh
         run: |
           echo "[user]
-	email = ${{ env.GITCONFIG_EMAIL }}
-	name = ${{ env.GITCONFIG_NAME }}
-  signingkey = ${{ env.GITCONFIG_GPG }}" > ~/.gitconfig
+	        email = ${{ env.GITCONFIG_EMAIL }}
+	        name = ${{ env.GITCONFIG_NAME }}
+          signingkey = ${{ env.GITCONFIG_GPG }}" > ~/.gitconfig
           echo "the name is " ${{ env.GITCONFIG_NAME }}
 
 
