@@ -29,7 +29,10 @@ jobs:
         continue-on-error: true
       
       - name: Run testGitCommandsFunction.sh tests
-        run: ./tests/testGitCommandsFunction.sh
+        run: |
+          git config user.mail "marinosnisiotis@gmail.com"
+          git config user.name "marinos"
+          ./tests/testGitCommandsFunction.sh
         continue-on-error: true
       
       - name: Run testChangeSpecificLineFunction.sh tests
