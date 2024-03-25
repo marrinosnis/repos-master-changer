@@ -32,8 +32,6 @@ jobs:
         run: |
           git config user.mail "marinosnisiotis@gmail.com"
           git config user.name "marinos"
-
-          ls .gitconfig
           ./tests/testGitCommandsFunction.sh
         continue-on-error: true
       
