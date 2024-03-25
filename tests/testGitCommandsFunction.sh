@@ -38,7 +38,7 @@ function testGitCommitCommand() {
     assertContains "${gitStatus}" "new file:   temp.txt"
 
     gitCommitResponse=$( {
-        echo "git commit -m \"${commitMessage}\" "
+        echo "git commit -S -m \"${commitMessage}\" "
         echo "."
         } | $script --git)
     
