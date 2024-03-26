@@ -19,8 +19,8 @@ jobs:
         run: cat $(which shunit2) | grep "SHUNIT_VERSION"
         continue-on-error: true
 
-      - name: Impoert GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6.1.0
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
