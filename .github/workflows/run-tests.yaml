@@ -26,11 +26,9 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true
-          
+
       - name: Run testGitCommandsFunction.sh tests
         run: |
-          git config user.mail "marinosnisiotis@gmail.com"
-          git config user.name "marinos"
           ./tests/testGitCommandsFunction.sh
         continue-on-error: true  
 
