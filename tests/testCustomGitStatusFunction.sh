@@ -10,9 +10,12 @@ function oneTimeSetUp(){
     fi                                                                                 # The current scenario, is supposed to run on CI/CD where no changes would be, as 
 }                                                                                      # everything will be commited. Locally, instead, there might be differences, so in order to run
                                                                                        # the test locally successfully, a stash must be done.
-function testCustomGitStatusFunction(){
+function testCustomGitStatusFunctionUntrackedAndTrackedFile(){
     touch temp.txt
     
+    listOfFiles=$(ls -a)
+    assertContains "${listOfFiles}" "temp.txt"
+
     responseUntracked="$($script)"
     responseUntrackedWithoutColors=$(echo "$responseUntracked" | sed 's/\x1B\[[0-9;]*[JKmsu]//g')
     assertContains "${responseUntrackedWithoutColors}" "${mapExpectedMessages[0]}"
@@ -35,4 +38,4 @@ function oneTimeTearDown() {
 
 shift $#
 
-source shunit2
+source /usr/bin/shunit2

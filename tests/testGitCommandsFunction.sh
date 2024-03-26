@@ -54,11 +54,6 @@ function testGitCommitCommand() {
     rm temp.txt
 }
 
-# function oneTimeTearDown() {
-#     rm .gitconfig2
-# }
-
-
 shift $#
 
 source /usr/bin/shunit2
