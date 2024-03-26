@@ -4,7 +4,7 @@ commitCode(){
 
     local messageArgument=("$@")
     gitCommitMessage="${messageArgument}"
-    git -C "$pathToFolder" commit -m "$gitCommitMessage"
+    git -C "$pathToFolder" commit -S -m "$gitCommitMessage"
 }
 
 gitFunction(){
