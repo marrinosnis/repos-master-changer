@@ -65,4 +65,4 @@ function oneTimeTearDown() {
 
 shift $#
 
-source /usr/bin/shunit2
+source shunit2

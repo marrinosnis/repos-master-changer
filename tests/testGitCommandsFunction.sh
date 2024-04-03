@@ -56,4 +56,4 @@ function testGitCommitCommand() {
 
 shift $#
 
-source /usr/bin/shunit2
+source shunit2

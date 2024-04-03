@@ -1,5 +1,5 @@
 # repos-master-changer
-A powerful bash script which can add&commit, push, edit the context of specific files using the `sed` tool. That script was created
+A powerful bash script which can add-commit-push and edit the context of specific files using the `sed` tool. That script was created
 for massive editing, committing and pushing **the same changes** to many repos simultaneously. In that way unexpected typos and possible
 errors can be avoided. Also helps to reduce the times of doing the same steps.
 
@@ -7,8 +7,18 @@ The script was written in `3.2.57(1)-release (arm64-apple-darwin22)` bash versio
 `4.3.46(1)-release (x86_64-apple-darwin14.5.0)`. To make sure that you have the correct version in your machine, open a terminal and execute
 the command:`bash --version`. Most probably if you are using Linux or MacOS, it is already installed.
 
+## Table of Contents
+|    |                                                               |
+|----|---------------------------------------------------------------|
+| 1. | [Quick setup of the script](#quick-setup-of-the-script)       |
+| 2. | [Ways of execution the script](#ways-of-execution-the-script) |
+| 3. | [Specify paths](#specify-paths)                               |
+| 4. | [Examples](#examples)                                         |
+| 5. | [Supported commands](#supported-commands)                     |
+| 6. | [Execute commands locally](#execute-tests-locally)            |
+
 ## Quick setup of the script
-First clone the repo to your local machine. Open the `gitReposEditor.sh` with you favorite editor, and set the variable `rootFolder` with the folder
+First clone the repo or download the code as zip file to your local machine. Open the `gitReposEditor.sh` with you favorite editor, and set the variable `rootFolder` with the folder
 which contains all the folders/projects you want to edit and apply the same changes to them.
 If there are some other folders in the same `rootFolder`, you can specify a <ins>search-pattern</ins> in order to look for the desired ones. To set the
 search-pattern, modify the variable `searchPattern` with the appropriate match pattern so the script can find all the folders. Follow up to this 
@@ -21,13 +31,13 @@ search-pattern, modify the variable `searchPattern` with the appropriate match p
 Now that everything is set up, there are several arguments that the script can be executed with, but first make sure the script has execution permission. If not,
 enable it with the command `chmod +x gitReposEditor.sh`.
 
-| **Arguments**        | **Command**                              | Description                                                                                                                                                                        |
-|----------------------|------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| *none*               | ./gitReposEditor.sh                      | Shows a custom `git status` command of all the folders the pattern has found ([no arguments](#no-arguments))                                                                       |
-| --setYAMLRunningMode | ./gitReposEditor.sh --setYAMLRunningMode | Change the running mode from `on:workflow_dispatch` to `on:push` ( [YAML example](#yaml-example) )                                                                                 |
-| --git                | ./gitReposEditor.sh --git                | Allow user to perform any git command as if he was on terminal ([git command example](#git-command-example))                                                                       |                                                                                                                                                 
-| --specific           | ./gitReposEditor.sh --specific           | Prompt the user to enter the specific`line` where the change will take place, the `old text` which will be replaced from the `new text`. ( [specific example](#specific-example) ) |
-| --customCommand      | ./gitReposEditor.sh --customCommand      | Gives the ability to the user, to use a command that it not declared in the script ( [custom-command example](#custom-command-example) )                                           |
+| **Arguments**        | **Command**                              | Description                                                                                                                                                                      |
+|----------------------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| *none*               | ./gitReposEditor.sh                      | Shows a custom `git status` command of all the folders the pattern has found ([no arguments example](#no-arguments-example))                                                     |
+| --setYAMLRunningMode | ./gitReposEditor.sh --setYAMLRunningMode | Change the running mode from `on:workflow_dispatch` to `on:push` ([YAML example](#yaml-example))                                                                                 |
+| --git                | ./gitReposEditor.sh --git                | Allow user to perform any git command as if he was on terminal ([git command example](#git-command-example))                                                                     |                                                                                                                                                 
+| --specific           | ./gitReposEditor.sh --specific           | Prompt the user to enter the specific`line` where the change will take place, the `old text` which will be replaced from the `new text`. ([specific example](#specific-example)) |
+| --customCommand      | ./gitReposEditor.sh --customCommand      | Gives the ability to the user, to use a command that it not declared in the script ([custom-command example](#custom-command-example))                                           |
 
 ## Specify paths
 After choosing an option, the user is asked to provide paths, where the previous selected option will be applied.\
@@ -64,7 +74,7 @@ In order to perform any git action/command, execute the script with the `--git` 
  Enter the git command:
 ```
 At this point a git command is expected, as if it was written in a terminal e.g. `git commit -S -m "commit message"` or `git restore --staged .`.\
-Then, the appropriate paths should be declared. Again, if none provided the git command will be applied to all the matching folders.
+Then, the appropriate paths should be declared. Again, if none provided the git command will be applied to all the matching folders/paths.
 
 ### <ins>specific example</ins>
 This option is for editing specific lines in files. The files **must** be the same, and have exactly the same lines and indentation. This is required as the `sed` tool
@@ -195,7 +205,7 @@ With the same approach other commands can be executed.
 In this example, the file `tempFile1` was copied to three other paths/folders. First was declared the copy command `cp` and then the paths where this command should be
 applied.
 
-### Supported commands
+## Supported commands
 
 Currently, the supported commands that the script can handle are:
 
@@ -206,3 +216,88 @@ Currently, the supported commands that the script can handle are:
 | `rm`        | accepts one or more arguments   | remove one or more files from one or more folders |
 | `touch`     | accepts one or more arguments   | creates one or more files to one or more folders  |
 | `mkdir`     | accepts one or more arguments   | can create one or more folders to many paths      | 
+
+
+## Execute tests locally
+
+> [!WARNING]  
+> In some files, the test scenarios are dependent on each other, and some test cases perform changes to the local repository
+> e.g. create files, or change the current `git status` of the project. For this reason, the tests are implemented to create the files
+> or change the status of the repository, but in the end are reverting these changes, in order to let the project in the state were it was
+> before the tests ran. That's why when editing or creating new tests scenarios keep in mind to preserve the proper state of the project.
+
+> [!IMPORTANT]  
+> Some of the tests are checking that the `git status` command is returning the expected outcome. That means the appropriate messages have
+> been created for a specific state of the project, e.g. the tests in the file `testCustomGitStatusFunction.sh` check the status of the
+> project with the `custom created git status` command. If there are changes that are **<ins>uncommitted</ins>**, then the test saves the changes,
+> run the test case scenarios, and in the end applies again the saved changes. If there **<ins>committed</ins>** changes that are not **<ins>pushed</ins>**
+> on the remote branch, then the test scenarios will fail, as the assertions with the messages will not be the same.\
+> Also, the file `testGitCommandsFunction.sh` performs some git commands were the state of the project **<ins>must not contain committed & unpushed</ins>** changes.\
+> To sum up, the previous 2 files: `testCustomGitStatusFunction.sh` & `testGitCommandsFunction.sh` when there will be executed locally,
+> the state of the repository must not have committed and unpushed changes. On `github actions`, this issue is not appearing as there are no committed changes,
+> and everything is already on remote branch-server.
+
+
+The current project contains tests that have written with the `shunit2` tool. Every function that is in the `helper functions` folder, has test case, that 
+can be found in the `tests` folder. If you want to run the tests locally make sure that you have the `shunit2` tool installed. To check if it is installed,
+run:
+```commandline
+$ cat $(which shunit2) | grep "SHUNIT_VERSION"
+```
+If it is <ins>installed</ins> you will get the following message:
+> command [ -n "${SHUNIT_VERSION:-}" ] && exit 0\
+ SHUNIT_VERSION='2.1.8'
+
+If it is <ins>not installed</ins> you will get the following message:
+> shunit2 not found
+
+In order to install it on Linux or MacOS software environment, you may use the following command in a new terminal window:\
+`Linux`
+```
+$ sudo apt-get update
+$ sudo apt-get -y install shunit2
+```
+
+`MacOS`
+
+```
+$ brew install shunit2
+```
+> [!IMPORTANT]  
+> The tool `brew` is assumed that it is already installed in MacOS machine.
+
+After the installation of the `shunit2` to run the tests you need to be at the `root` folder of th current project:
+> /home/<ins>*username*</ins>/repos-master-changer
+
+From this working directory, if you perform `ls` you should see the `tests` folder. In order to run the test files execute the following
+line of code:
+>./tests/*name_of_test_script_file.sh*
+
+With the `name_of_test_script_file.sh` it is referred to any file from the `tests` folder that starts with *test* prefix:\
+testCustomCommandsFunction.sh\
+testGitCommandsFunction.sh\
+testChangeSpecificLineFunction.sh\
+testCustomGitStatusFunction.sh\
+
+example:
+> ./tests/testGitCommandsFunction.sh
+
+*possible outcome in Linux*
+```commandline
+1  testChangeSpecificLine
+2  sed: can't read : No such file or directory
+3  sed: can't read : No such file or directory
+4  testChangeSpecificLineInTwoFilesInDifferentPath
+5  sed: can't read : No such file or directory
+6  sed: can't read : No such file or directory
+7
+8  Ran 2 tests.
+9
+10 OK
+```
+The lines `1` & `4` are indicating the 2 test scenarios that have run from the file.
+
+> [!NOTE]
+> The lines: 2,3 & 5,6 can be **ignored** as they are result from the actions inside the test scenarios. If it shows the word `OK`
+> as it is at line `10`, then that means that everything was successful.\
+> If the tests were failed then the respective message would be `FAILED (failures=2)`
