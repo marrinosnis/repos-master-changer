@@ -24,7 +24,7 @@ jobs:
       - name: Check that shunit2 is installed
         run: cat $(which shunit2) | grep "SHUNIT_VERSION"
 
-      - name: Import GPG key
+      - name: Import GPG key to perform signed commits
         uses: crazy-max/ghaction-import-gpg@v6.1.0
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
