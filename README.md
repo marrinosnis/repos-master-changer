@@ -168,7 +168,7 @@ What the script will do is to find the files, and change the line `10`. The fina
 > [!WARNING]
 > 1) The change happened on the same line for the same element. If at line 10 of the `test.yaml` file that is in the `/beta/` path didn't have this text, the 
 > replacement would have failed. So, that means the exactly same text has to be at the same line in order the replacement to be successful.
-> 2) If the line doesn't exist at all, also the replacement would fail. For example if the change was about to happen in the 21st line of the files, that wouldn't be applicable
+> 2) If the line doesn't exist at all, also the replacement will fail. For example if the change was about to happen at the 21st line of the files, that wouldn't be applicable
 > as the 21st line doesn't exist.
 
 
@@ -177,7 +177,7 @@ What the script will do is to find the files, and change the line `10`. The fina
 This option is used in order to cover as many as possible commands that are useful for managing files in multiple folders. For example, you may need to remove or create files
 in many paths/folders, or you may need to copy the same file in many other folders. This option was created in order to facilitate these actions.
 
-In order to use this command, run the script with the `customCommand` option: `./gitReposEditor --customCommand`. After that you type the command you want to perform as if it was
+In order to use this command, run the script with the `customCommand` option: `./gitReposEditor --customCommand`. After that, type the command you want to perform as if it was
 in the terminal, and then specify the path/s where this command should be applied.
 
 >Create new file example.
@@ -188,7 +188,7 @@ in the terminal, and then specify the path/s where this command should be applie
  If you leave it empty, the changes will be applied to all the project paths.
  Enter paths or leave it empty to apply to all the project folders: /Users/marinosnisiotis/Desktop, /Users/marinosnisiotis/Desktop/testFolder
 ```
-In the previous example, a new file `tempFile1` is created at the Desktop path/folder and at the test path/folder.
+In the previous example, a new file `tempFile1` is created at the `/Desktop` path and at the `/Desktop/testFolder` path.
 With the same approach other commands can be executed.
 
 >Copy file from one path/folder to other/s
@@ -236,7 +236,8 @@ Currently, the supported commands that the script can handle are:
 
 
 The current project contains tests that have written with the `shunit2` tool. Every function that is in the `helper functions` folder, has test case, that 
-can be found in the `tests` folder. If you want to run the tests locally make sure that you have the `shunit2` tool installed. To check if it is installed,
+can be found in the `tests` folder, apart from the function in the file `setSpecificPathsFunction.sh`, as this is passively tested with the other tests bacause
+is mandatory step for all the other actinons. If you want to run the tests locally make sure that you have the `shunit2` tool installed. To check if it is installed,
 run:
 ```commandline
 $ cat $(which shunit2) | grep "SHUNIT_VERSION"
