@@ -13,7 +13,6 @@ specifiedPaths=""
 extendSpecifiedPaths=""
 mapChoices=(
     "status::customGitStatus"
-    "setYAMLRunningMode::changeYAMLRunningMode"
     "git::gitFunction"
     "specific::changeSpecificLine"
     "customCommand::customCommandsFunction"
@@ -27,7 +26,6 @@ source ./helper-functions/customGitStatusFunction.sh
 source ./helper-functions/gitCommandsFunction.sh
 source ./helper-functions/changeSpecificLineFunction.sh
 source ./helper-functions/setSpecificPathsFunction.sh
-source ./helper-functions/changeYAMLFunction.sh
 source ./helper-functions/customCommandsFunction.sh
 
 directories=$(find "$rootFolder" -maxdepth 1 -type d \( "${searchPattern[@]}" \) -exec sh -c 'cd "{}" && pwd' \;)
@@ -68,11 +66,6 @@ fi
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --setYAMLRunningMode)
-            setSpecificPaths
-            performAction "setYAMLRunningMode" "" "${specifiedPaths[@]}"
-            ;;
-
         --git)
             read -p "Enter the git command: " cmd
             setSpecificPaths

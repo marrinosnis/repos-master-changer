@@ -34,7 +34,6 @@ enable it with the command `chmod +x gitReposEditor.sh`.
 | **Arguments**        | **Command**                              | Description                                                                                                                                                                      |
 |----------------------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | *none*               | ./gitReposEditor.sh                      | Shows a custom `git status` command of all the folders the pattern has found ([no arguments example](#no-arguments-example))                                                     |
-| --setYAMLRunningMode | ./gitReposEditor.sh --setYAMLRunningMode | Change the running mode from `on:workflow_dispatch` to `on:push` ([YAML example](#yaml-example))                                                                                 |
 | --git                | ./gitReposEditor.sh --git                | Allow user to perform any git command as if he was on terminal ([git command example](#git-command-example))                                                                     |                                                                                                                                                 
 | --specific           | ./gitReposEditor.sh --specific           | Prompt the user to enter the specific`line` where the change will take place, the `old text` which will be replaced from the `new text`. ([specific example](#specific-example)) |
 | --customCommand      | ./gitReposEditor.sh --customCommand      | Gives the ability to the user, to use a command that it not declared in the script ([custom-command example](#custom-command-example))                                           |
@@ -64,8 +63,6 @@ variable.
 ### <ins>no arguments example</ins>
 When no arguments are provided then it displays a custom status of each project. Of course, there is the option to
 perform the `git status` command from the `--git` option (see below [git command example](#git-command-example))
-
-### <ins>YAML example</ins>
 
 ### <ins>git command example</ins>
 In order to perform any git action/command, execute the script with the `--git` option
