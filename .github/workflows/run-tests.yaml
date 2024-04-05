@@ -7,7 +7,7 @@ jobs:
   set-up-and-run-bash-tests:
     strategy:
        matrix: 
-        envOS: [ubuntu-latest]
+        envOS: [ubuntu-latest] # future addition to run also at UNIX environment
 
     name: Set the environment and run tests
     runs-on: ${{ matrix.envOS }}

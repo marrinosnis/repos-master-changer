@@ -231,10 +231,10 @@ Currently, the supported commands that the script can handle are:
 > been created for a specific state of the project, e.g. the tests in the file `testCustomGitStatusFunction.sh` check the status of the
 > project with the `custom created git status` command. If there are changes that are **<ins>uncommitted</ins>**, then the test saves the changes,
 > run the test case scenarios, and in the end applies again the saved changes. If there **<ins>committed</ins>** changes that are not **<ins>pushed</ins>**
-> on the remote branch, then the test scenarios will fail, as the assertions with the messages will not be the same.\
+> on the remote branch, then the test scenarios will fail, as the assertions with the messages will not be the same because messages differ between git stages.\
 > Also, the file `testGitCommandsFunction.sh` performs some git commands were the state of the project **<ins>must not contain committed & unpushed</ins>** changes.\
-> To sum up, the previous 2 files: `testCustomGitStatusFunction.sh` & `testGitCommandsFunction.sh` when there will be executed locally,
-> the state of the repository must not have committed and unpushed changes. On `github actions`, this issue is not appearing as there are no committed changes,
+> To sum up, the previous 2 test files: `testCustomGitStatusFunction.sh` & `testGitCommandsFunction.sh` when there will be executed locally,
+> the state of the repository must not have committed and unpushed changes. On `github actions`, this issue is not appearing as there are no committed and unpushed changes,
 > and everything is already on remote branch-server.
 
 
@@ -259,14 +259,14 @@ $ sudo apt-get -y install shunit2
 ```
 
 `MacOS`
-
 ```
 $ brew install shunit2
 ```
+
 > [!IMPORTANT]  
 > The tool `brew` is assumed that it is already installed in MacOS machine.
 
-After the installation of the `shunit2` to run the tests you need to be at the `root` folder of th current project:
+After the installation of the `shunit2` to run the tests you need to be at the `root` folder of the current project:
 > /home/<ins>*username*</ins>/repos-master-changer
 
 From this working directory, if you perform `ls` you should see the `tests` folder. In order to run the test files execute the following
@@ -280,7 +280,7 @@ testChangeSpecificLineFunction.sh\
 testCustomGitStatusFunction.sh\
 
 example:
-> ./tests/testGitCommandsFunction.sh
+> ./tests/testChangeSpecificLineFunction.sh
 
 *possible outcome in Linux*
 ```commandline
@@ -298,6 +298,6 @@ example:
 The lines `1` & `4` are indicating the 2 test scenarios that have run from the file.
 
 > [!NOTE]
-> The lines: 2,3 & 5,6 can be **ignored** as they are result from the actions inside the test scenarios. If it shows the word `OK`
-> as it is at line `10`, then that means that everything was successful.\
+> The lines: 2,3 & 5,6 can be **ignored** as they are result from the actions inside the test scenarios, with the `sed` tool. If it shows 
+> the word `OK` as it is at line `10`, then that means that everything was successful.\
 > If the tests were failed then the respective message would be `FAILED (failures=2)`
