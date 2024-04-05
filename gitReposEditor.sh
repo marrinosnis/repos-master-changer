@@ -30,7 +30,7 @@ source ./helper-functions/setSpecificPathsFunction.sh
 source ./helper-functions/changeYAMLFunction.sh
 source ./helper-functions/customCommandsFunction.sh
 
-ctpDirectories=$(find "$rootFolder" -maxdepth 1 -type d \( "${searchPattern[@]}" \) -exec sh -c 'cd "{}" && pwd' \;)
+directories=$(find "$rootFolder" -maxdepth 1 -type d \( "${searchPattern[@]}" \) -exec sh -c 'cd "{}" && pwd' \;)
 
 performAction() {
     local userChoice=$1
@@ -53,8 +53,8 @@ performAction() {
     shift
 
 
-    local customInputPaths="${@:-$ctpDirectories}"
-    [[ -z "$customInputPaths" ]] && customInputPaths="$ctpDirectories"
+    local customInputPaths="${@:-$directories}"
+    [[ -z "$customInputPaths" ]] && customInputPaths="$directories"
     paths=($customInputPaths)       #make it array, so I can access each element individual
 
     for path in "${paths[@]}"; do

@@ -15,7 +15,7 @@ the command:`bash --version`. Most probably if you are using Linux or MacOS, it 
 | 3. | [Specify paths](#specify-paths)                               |
 | 4. | [Examples](#examples)                                         |
 | 5. | [Supported commands](#supported-commands)                     |
-| 6. | [Execute commands locally](#execute-tests-locally)            |
+| 6. | [Execute tests locally](#execute-tests-locally)               |
 
 ## Quick setup of the script
 First clone the repo or download the code as zip file to your local machine. Open the `gitReposEditor.sh` with you favorite editor, and set the variable `rootFolder` with the folder
