@@ -1,0 +1,45 @@
+name: Run unittest for script functions
+
+on:
+  push:
+
+jobs:
+  set-up-and-run-bash-tests:
+    strategy:
+       matrix: 
+        envOS: [ubuntu-latest] # future addition to run also at UNIX environment
+
+    name: Set the environment and run tests
+    runs-on: ${{ matrix.envOS }}
+    continue-on-error: true
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Install shunit2 on Linux OS
+        if: ${{ matrix.envOS == 'ubuntu-latest'}}
+        run: sudo apt-get update && sudo apt-get install -y shunit2
+
+      - name: Check that shunit2 is installed
+        run: cat $(which shunit2) | grep "SHUNIT_VERSION"
+
+      - name: Import GPG key to perform signed commits
+        uses: crazy-max/ghaction-import-gpg@v6.1.0
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Run testGitCommandsFunction.sh tests
+        run: ./tests/testGitCommandsFunction.sh
+
+      - name: Run testCustomCommandFunction.sh tests
+        run: ./tests/testCustomCommandsFunction.sh
+      
+      - name: Run testChangeSpecificLineFunction.sh tests
+        run: ./tests/testChangeSpecificLineFunction.sh
+      
+      - name: Run testCustomGitStatusFunction.sh tests
+        run: ./tests/testCustomGitStatusFunction.sh
