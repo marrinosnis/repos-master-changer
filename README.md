@@ -3,8 +3,7 @@ A powerful bash script which can add-commit-push and edit the context of specifi
 for massive editing, committing and pushing **the same changes** to many repos simultaneously. In that way unexpected typos and possible
 errors can be avoided. Also helps to reduce the times of doing the same steps.
 
-The script was written in `3.2.57(1)-release (arm64-apple-darwin22)` bash version, but it will be updated in the future to use the
-`4.3.46(1)-release (x86_64-apple-darwin14.5.0)`. To make sure that you have the correct version in your machine, open a terminal and execute
+The script has been tested in: <ins>MacOS</ins>: `3.2.57(1)-release (arm64-apple-darwin22)` and <ins>Linux</ins>: `GNU bash, version 5.1.16(1)-release (x86_64-pc-linux-gnu)` bash versions. To make sure that you have the correct version in your machine, open a terminal and execute
 the command:`bash --version`. Most probably if you are using Linux or MacOS, it is already installed.
 
 ## Table of Contents
