@@ -1,3 +1,5 @@
+![bash-script-tests](https://github.com/marrinosnis/repos-master-changer/actions/workflows/run-tests.yaml/badge.svg)
+
 # repos-master-changer
 A powerful bash script which can add-commit-push and edit the context of specific files using the `sed` tool. That script was created
 for massive editing, committing and pushing **the same changes** to many repos simultaneously. In that way unexpected typos and possible
