@@ -295,6 +295,6 @@ example:
 The lines `1` & `4` are indicating the 2 test scenarios that have run from the file.
 
 > [!NOTE]
-> The lines: 2,3 & 5,6 can be **ignored** as they are result from the actions inside the test scenarios, with the `sed` tool. If it shows 
+> The lines: 2,3 & 5,6 can be **ignored** as theis outcome comes from the actions inside the test scenarios, with the `sed` tool. If it shows 
 > the word `OK` as it is at line `10`, then that means that everything was successful.\
 > If the tests were failed then the respective message would be `FAILED (failures=2)`
