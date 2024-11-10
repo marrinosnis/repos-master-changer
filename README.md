@@ -223,7 +223,7 @@ Currently, the supported commands that the script can handle are:
 > [!WARNING]  
 > In some files, the test scenarios are dependent on each other, and some test cases perform changes to the local repository
 > e.g. create files, or change the current `git status` of the project. For this reason, the tests are implemented to create the files
-> or change the status of the repository, but in the end are reverting these changes, in order to let the project in the state were it was
+> or change the status of the repository, but in the end are reverting these changes, in order to let the project in the state where it was
 > before the tests ran. That's why when editing or creating new tests scenarios keep in mind to preserve the proper state of the project.
 
 > [!IMPORTANT]  
@@ -232,7 +232,7 @@ Currently, the supported commands that the script can handle are:
 > project with the `custom created git status` command. If there are changes that are **<ins>uncommitted</ins>**, then the test saves the changes,
 > run the test case scenarios, and in the end applies again the saved changes. If there **<ins>committed</ins>** changes that are not **<ins>pushed</ins>**
 > on the remote branch, then the test scenarios will fail, as the assertions with the messages will not be the same because messages differ between git stages.\
-> Also, the file `testGitCommandsFunction.sh` performs some git commands were the state of the project **<ins>must not contain committed & unpushed</ins>** changes.\
+> Also, the file `testGitCommandsFunction.sh` performs some git commands where the state of the project **<ins>must not contain committed & unpushed</ins>** changes.\
 > To sum up, the previous 2 test files: `testCustomGitStatusFunction.sh` & `testGitCommandsFunction.sh` when there will be executed locally,
 > the state of the repository must not have committed and unpushed changes. On `github actions`, this issue is not appearing as there are no committed and unpushed changes,
 > and everything is already on remote branch-server.
@@ -301,4 +301,3 @@ The lines `1` & `4` are indicating the 2 test scenarios that have run from the f
 > The lines: 2,3 & 5,6 can be **ignored** as they are result from the actions inside the test scenarios, with the `sed` tool. If it shows 
 > the word `OK` as it is at line `10`, then that means that everything was successful.\
 > If the tests were failed then the respective message would be `FAILED (failures=2)`
-sm
