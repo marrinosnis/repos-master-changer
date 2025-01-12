@@ -1,7 +1,14 @@
 name: Run unittest for script functions
 
 on:
-  push:
+ # Runs only on Monday at 11:00 AM
+  schedule:
+    - cron: "0 11 * * 0"
+
+# Runs when a branch is merged into the master branch
+  push:  
+    branches:
+      - yaml-operation
 
 jobs:
   set-up-and-run-bash-tests:

@@ -15,8 +15,8 @@ function testCustomGitStatusFunctionUntrackedAndTrackedFile(){
     
     listOfFiles=$(ls -a)
     assertContains "${listOfFiles}" "temp.txt"
-
     responseUntracked="$($script)"
+
     responseUntrackedWithoutColors=$(echo "$responseUntracked" | sed 's/\x1B\[[0-9;]*[JKmsu]//g')
     assertContains "${responseUntrackedWithoutColors}" "${mapExpectedMessages[0]}"
 
